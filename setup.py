@@ -12,10 +12,11 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="hsipl_algo",
-    version="0.0.1.0.5",
+    version="1.0.2",
     author="WEN",
     author_email="luckywilliam111@gmail.com",
     description="A small example package",
+    license='MIT',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/luckywilliam111/hsipl_algo",
