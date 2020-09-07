@@ -45,72 +45,6 @@ def AMF(original, target):
     
     return AMF_result
 
-def ASW_CEM(HIM, d, Sprout_HIM, minwd, midwd, maxwd, wd_range, sprout_rate):
-    x, y, z = HIM.shape
-    
-    wd_matrix = np.zeros([x, y])
-    mid_ASW_CEM_result = np.zeros([x, y])
-    K = midwd
-    
-    for i in range(x):
-        j = 0
-        countnum = 0
-        while j < y:
-            half = np.fix(K / 2)
-            
-            x1 = np.int(i - half)
-            x2 = np.int(i + half)
-            y1 = np.int(j - half)
-            y2 = np.int(j + half)
-            
-            if x1 <= 0:
-                x1 = 0
-            elif x2 >= x:
-                x2 = x
-                
-            if y1 <= 0:
-                y1 = 0
-            elif y2 >= y:
-                y2 = y
-            
-            xx, yy, zz = Sprout_HIM.shape
-            Sprout = Sprout_HIM.reshape(xx * yy, zz)
-            temp = np.sum(np.sum(Sprout[x1:x2, y1:y2], 0), 0)
-            sumsprout = temp
-            num = Sprout[x1:x2, y1:y2].shape[0] * Sprout[x1:x2, y1:y2].shape[1]
-            
-            if (sumsprout / num) < (sprout_rate - 0.001) and countnum == 0:
-                K = K - wd_range
-                j = j - 1
-                countnum = 1
-            elif (sumsprout / num) > (sprout_rate + 0.001) and countnum == 0:
-                K = K + wd_range
-                j = j - 1
-                countnum = 2;
-            elif (sumsprout / num) < (0.01) and countnum == 1 and K > minwd:
-                K = K - wd_range
-                j = j - 1
-            elif (sumsprout / num) > (0.01) and countnum == 2 and K < maxwd:
-                K = K + wd_range
-                j = j - 1
-            else:
-                Local_HIM = HIM[x1:x2, y1:y2,:]
-                
-                xxx, yyy, zzz = Local_HIM.shape
-                X = Local_HIM.reshape(xxx * yyy, zzz)
-                S = np.dot(np.transpose(X), X)
-                r = np.reshape(HIM[i, j, :], [z,1])
-				
-                IS = np.linalg.inv(S)
-                
-                mid_ASW_CEM_result[i, j] = np.dot(np.dot(np.transpose(r), IS), d) / np.dot(np.dot(np.transpose(d), IS), d)
-                wd_matrix[i, j] = K
-                K = midwd
-                countnum = 0
-            j = j + 1
-    
-    return mid_ASW_CEM_result
-
 def CBD(HIM, target):
     x, y, z = HIM.shape
     
@@ -152,23 +86,6 @@ def ED(original, target):
     ED_result = dr.reshape(x, y)
     
     return ED_result
-
-def GLRT(original, target, Non_target):
-    x, y, z = original.shape
-    
-    B = (original.reshape(x * y, z)).transpose()
-    
-    PB = np.eye(Non_target.shape[0]) - np.dot(np.dot(Non_target, np.dot(Non_target.transpose(), Non_target)), Non_target.transpose())
-    
-    dU = np.hstack([target, Non_target])
-    
-    PSB = np.eye(Non_target.shape[0]) - np.dot(np.dot(dU, np.dot(dU.transpose(), dU)), dU.transpose())
-    
-    gl = np.sum(np.dot(B.transpose(), PB - PSB) * B.transpose(), 1) / np.sum(np.dot(B.transpose(), PSB) * B.transpose(), 1)
-    
-    GLRT_result = gl.reshape(x, y)
-    
-    return GLRT_result
 
 def JMD(HIM, target):
     x, y, z = HIM.shape
@@ -245,20 +162,6 @@ def OPD(HIM, d):
     OPD_result = dr.reshape(x, y)
     
     return OPD_result
-
-def OSP(original, target, Non_target):
-    x, y, z = original.shape
-    
-    B = (original.reshape(x * y, z)).transpose()
-    I = np.eye(z)
-    
-    P = I - np.dot(np.dot(Non_target, (np.power(np.dot(np.transpose(Non_target), Non_target), -1))), np.transpose(Non_target))
-    
-    dr = np.dot(np.dot(np.transpose(target), P), B)
-    
-    OSP_result = dr.reshape(x, y)
-    
-    return OSP_result
 
 def RMD(original, d):
     x, y, z = original.shape
@@ -444,52 +347,3 @@ def TD(HIM, target):
     TD_result = dr.reshape(x, y)
     
     return TD_result
-
-def awgn(x, SNR):
-    SNR = 10 ** (SNR / 10.0)
-    xpower = np.sum(x ** 2) / len(x)
-    npower = xpower / SNR
-    noise = np.random.randn(len(x)) * np.sqrt(npower)
-    
-    return x + noise
-
-def hCEM(HIM, d, SNR, lamb, epsilon, max_iter):
-    x, y, z = HIM.shape
-    
-    X = np.transpose(HIM.reshape(x * y, z))
-    
-    for i in range(x * y):
-        X[:, i] = awgn(X[:, i], SNR)
-    
-    Weight = np.ones([1, x * y])
-    hCEMMap_old = np.ones([1, x * y])
-    
-    Energy = []
-    
-    for i in range(max_iter):
-        X = X * Weight
-            
-        R = np.dot(X, X.transpose()) / (x * y)
-        
-        iR = np.linalg.inv(R + 0.0001 * np.eye(z))
-        
-        w = np.dot(iR, d) / np.dot(np.dot(d.transpose(), iR), d)
-        
-        hCEMMap = np.dot(w.transpose(), X)
-        
-        Weight = 1 - np.power(2.71828, (-lamb * hCEMMap))
-        
-        Weight[Weight < 0] = 0
-        
-        res = np.power(np.linalg.norm(hCEMMap_old), 2) / (x * y) - np.power(np.linalg.norm(hCEMMap), 2) / (x * y)
-        
-        Energy.append(np.power(np.linalg.norm(hCEMMap), 2) / (x * y))
-        
-        hCEMMap_old = hCEMMap.copy()
-        
-        if abs(res) < epsilon:
-            break
-        
-    hCEMMap = hCEMMap.reshape(x, y)
-    
-    return hCEMMap
