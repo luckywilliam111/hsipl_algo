@@ -96,8 +96,6 @@ def hAMF(HIM, d, SNR, lamb, epsilon, max_iter, add_noise):
         
         res = np.power(np.linalg.norm(hAMFMap_old), 2) / (x * y) - np.power(np.linalg.norm(hAMFMap), 2) / (x * y)
         
-        print('iter = ', i, 'res value = ', res)
-        
         Energy.append(np.power(np.linalg.norm(hAMFMap), 2) / (x * y))
         
         hAMFMap_old = hAMFMap.copy()

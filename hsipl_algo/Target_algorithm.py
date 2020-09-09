@@ -99,7 +99,7 @@ def ASW_CEM(HIM, d, Sprout_HIM, minwd, midwd, maxwd, wd_range, sprout_rate):
                 xxx, yyy, zzz = Local_HIM.shape
                 X = Local_HIM.reshape(xxx * yyy, zzz)
                 S = np.dot(np.transpose(X), X)
-                r = np.reshape(HIM[i, j, :], [z,1])
+                r = np.reshape(HIM[i, j, :], [z, 1])
 				
                 IS = np.linalg.inv(S)
                 

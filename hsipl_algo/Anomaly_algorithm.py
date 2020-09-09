@@ -16,7 +16,7 @@ def K_RXD(original):
     
     Bu = B - rep_u
     
-    K = np.dot(np.transpose(Bu), Bu) / (x*y)
+    K = np.dot(np.transpose(Bu), Bu) / (x * y)
 	
     iK = np.linalg.inv(K)
     
@@ -31,7 +31,7 @@ def LPTD(original):
     
     B = original.reshape(x * y, z)
     
-    R = np.dot(np.transpose(B), B) / (x*y)
+    R = np.dot(np.transpose(B), B) / (x * y)
     
     iR = np.linalg.inv(R)
     
@@ -54,7 +54,7 @@ def M_RXD(original):
     
     Bu = B - rep_u
     
-    K = np.dot(np.transpose(Bu), Bu) / (x*y)
+    K = np.dot(np.transpose(Bu), Bu) / (x * y)
     
     iK = np.linalg.inv(K)
     
@@ -75,7 +75,7 @@ def N_RXD(original):
     
     Bu = B - rep_u
     
-    K = np.dot(np.transpose(Bu), Bu) / (x*y)
+    K = np.dot(np.transpose(Bu), Bu) / (x * y)
     
     iK = np.linalg.inv(K)
     
@@ -92,7 +92,7 @@ def R_RXD(original):
     
     B = original.reshape(x * y, z)
     
-    R = np.dot(np.transpose(B), B) / (x*y)
+    R = np.dot(np.transpose(B), B) / (x * y)
     
     iR = np.linalg.inv(R)
     
@@ -111,7 +111,7 @@ def UTD(original):
     
     Bu = B - rep_u
     
-    K = np.dot(np.transpose(Bu), Bu) / (x*y)
+    K = np.dot(np.transpose(Bu), Bu) / (x * y)
     
     iK = np.linalg.inv(K)
     
@@ -134,7 +134,7 @@ def UTD_RXD(original):
     
     Bu = B - rep_u
     
-    K = np.dot(np.transpose(Bu), Bu) / (x*y)
+    K = np.dot(np.transpose(Bu), Bu) / (x * y)
     
     iK = np.linalg.inv(K)
         
