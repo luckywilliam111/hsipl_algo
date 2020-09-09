@@ -20,7 +20,7 @@ def ACE(original, target):
     
     iK = np.linalg.inv(K)
     
-    dr = np.power(np.dot(np.dot(target.transpose(), iK), B.transpose()), 2) / np.dot(np.dot(target.transpose(), iK), target) * (np.sum(np.dot(B, iK) * B, 1)).reshape(1, x*y)
+    dr = np.power(np.dot(np.dot(target.transpose(), iK), B.transpose()), 2) / (np.dot(np.dot(target.transpose(), iK), target) * (np.sum(np.dot(B, iK) * B, 1)).reshape(1, x*y))
 	
     ACE_result = dr.reshape(x, y)
     
@@ -444,52 +444,3 @@ def TD(HIM, target):
     TD_result = dr.reshape(x, y)
     
     return TD_result
-
-def awgn(x, SNR):
-    SNR = 10 ** (SNR / 10.0)
-    xpower = np.sum(x ** 2) / len(x)
-    npower = xpower / SNR
-    noise = np.random.randn(len(x)) * np.sqrt(npower)
-    
-    return x + noise
-
-def hCEM(HIM, d, SNR, lamb, epsilon, max_iter):
-    x, y, z = HIM.shape
-    
-    X = np.transpose(HIM.reshape(x * y, z))
-    
-    for i in range(x * y):
-        X[:, i] = awgn(X[:, i], SNR)
-    
-    Weight = np.ones([1, x * y])
-    hCEMMap_old = np.ones([1, x * y])
-    
-    Energy = []
-    
-    for i in range(max_iter):
-        X = X * Weight
-            
-        R = np.dot(X, X.transpose()) / (x * y)
-        
-        iR = np.linalg.inv(R + 0.0001 * np.eye(z))
-        
-        w = np.dot(iR, d) / np.dot(np.dot(d.transpose(), iR), d)
-        
-        hCEMMap = np.dot(w.transpose(), X)
-        
-        Weight = 1 - np.power(2.71828, (-lamb * hCEMMap))
-        
-        Weight[Weight < 0] = 0
-        
-        res = np.power(np.linalg.norm(hCEMMap_old), 2) / (x * y) - np.power(np.linalg.norm(hCEMMap), 2) / (x * y)
-        
-        Energy.append(np.power(np.linalg.norm(hCEMMap), 2) / (x * y))
-        
-        hCEMMap_old = hCEMMap.copy()
-        
-        if abs(res) < epsilon:
-            break
-        
-    hCEMMap = hCEMMap.reshape(x, y)
-    
-    return hCEMMap
