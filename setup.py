@@ -15,7 +15,7 @@ setuptools.setup(
     version="1.0.4",
     author="WEN",
     author_email="luckywilliam111@gmail.com",
-    description="A small example package",
+    description="For HyperSpectral Image's Algorithm package",
     license='MIT',
     long_description=long_description,
     long_description_content_type="text/markdown",
