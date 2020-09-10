@@ -7,25 +7,6 @@ Created on Fri Sep  4 23:38:34 2020
 
 import numpy as np
 
-def ACE(original, target):
-    x, y, z = original.shape
-    
-    B = original.reshape(x * y, z)
-    u = np.mean(B, 0)
-    rep_u = u.reshape(1, z)
-    
-    Bu = B - rep_u
-    
-    K = np.dot(np.transpose(Bu), Bu) / (x * y)
-    
-    iK = np.linalg.inv(K)
-    
-    dr = np.power(np.dot(np.dot(target.transpose(), iK), B.transpose()), 2) / (np.dot(np.dot(target.transpose(), iK), target) * (np.sum(np.dot(B, iK) * B, 1)).reshape(1, x*y))
-	
-    ACE_result = dr.reshape(x, y)
-    
-    return ACE_result
-
 def AMF(original, target):
     x, y, z = original.shape
 
@@ -230,6 +211,25 @@ def KMFD(original, target):
     
     return KMFD_result
 
+def K_ACE(original, target):
+    x, y, z = original.shape
+    
+    B = original.reshape(x * y, z)
+    u = np.mean(B, 0)
+    rep_u = u.reshape(1, z)
+    
+    Bu = B - rep_u
+    
+    K = np.dot(np.transpose(Bu), Bu) / (x * y)
+    
+    iK = np.linalg.inv(K)
+    
+    dr = np.power(np.dot(np.dot(target.transpose(), iK), B.transpose()), 2) / (np.dot(np.dot(target.transpose(), iK), target) * (np.sum(np.dot(B, iK) * B, 1)).reshape(1, x*y))
+	
+    K_ACE_result = dr.reshape(x, y)
+    
+    return K_ACE_result
+
 def MF(original, target):
     x, y, z = original.shape
 
@@ -316,6 +316,21 @@ def RMFD(original, target):
     RMFD_result = dr.reshape(x, y)
     
     return RMFD_result
+
+def R_ACE(original, target):
+    x, y, z = original.shape
+    
+    B = original.reshape(x * y, z)
+    
+    R = np.dot(np.transpose(B), B) / (x * y)
+    
+    iR = np.linalg.inv(R)
+    
+    dr = np.power(np.dot(np.dot(target.transpose(), iR), B.transpose()), 2) / (np.dot(np.dot(target.transpose(), iR), target) * (np.sum(np.dot(B, iR) * B, 1)).reshape(1, x*y))
+	
+    R_ACE_result = dr.reshape(x, y)
+    
+    return R_ACE_result
 
 def SAM(original, target):
     x, y, z = original.shape
