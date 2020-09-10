@@ -12,7 +12,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="hsipl_algo",
-    version="1.0.5",
+    version="1.0.7",
     author="WEN",
     author_email="luckywilliam111@gmail.com",
     description="For HyperSpectral Image's Algorithm package",
