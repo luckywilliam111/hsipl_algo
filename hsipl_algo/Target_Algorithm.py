@@ -16,7 +16,7 @@ def ACE(original, target):
     
     Bu = B - rep_u
     
-    K = np.dot(np.transpose(Bu), Bu) / (x*y)
+    K = np.dot(np.transpose(Bu), Bu) / (x * y)
     
     iK = np.linalg.inv(K)
     
@@ -35,7 +35,7 @@ def AMF(original, target):
     
     Bu = B - rep_u
     
-    K = np.dot(np.transpose(Bu), Bu) / (x*y)
+    K = np.dot(np.transpose(Bu), Bu) / (x * y)
     
     iK = np.linalg.inv(K)
     
@@ -195,7 +195,7 @@ def KMD(original, target):
     
     Bu = B - rep_u
     
-    K = np.dot(np.transpose(Bu), Bu) / (x*y)
+    K = np.dot(np.transpose(Bu), Bu) / (x * y)
     
     iK = np.linalg.inv(K)
     
@@ -218,7 +218,7 @@ def KMFD(original, target):
     
     Bu = B - rep_u
     
-    K = np.dot(np.transpose(Bu), Bu) / (x*y)
+    K = np.dot(np.transpose(Bu), Bu) / (x * y)
     
     iK = np.linalg.inv(K)
     
@@ -229,6 +229,29 @@ def KMFD(original, target):
     KMFD_result = dr.reshape(x, y)
     
     return KMFD_result
+
+def MF(original, target):
+    x, y, z = original.shape
+
+    B = np.transpose(original.reshape(x * y, z))
+    u = np.mean(np.transpose(B), 0)
+    rep_u = u.reshape(z, 1)
+    
+    Bu = B - rep_u
+    
+    K = np.dot(Bu, np.transpose(Bu)) / (x * y)
+    
+    iK = np.linalg.inv(K)
+    
+    du = target - rep_u
+    
+    k = 1 / np.dot(np.dot(du.transpose(), iK), du)
+    
+    dr = np.dot((k * np.dot(iK, du)).transpose(), B)
+    
+    MF_result = dr.reshape(x, y)
+    
+    return MF_result
 
 def OPD(HIM, d):
     x, y, z = HIM.shape
@@ -265,7 +288,7 @@ def RMD(original, d):
     
     B = original.reshape(x * y, z)
     
-    R = np.dot(np.transpose(B), B) / (x*y)
+    R = np.dot(np.transpose(B), B) / (x * y)
     
     iR = np.linalg.inv(R)
     
@@ -284,7 +307,7 @@ def RMFD(original, target):
     
     B = original.reshape(x * y, z)
     
-    R = np.dot(np.transpose(B), B) / (x*y)
+    R = np.dot(np.transpose(B), B) / (x * y)
     
     IR = np.linalg.inv(R)
         
@@ -352,7 +375,7 @@ def SMF(original, target):
     
     Bu = B - rep_u
     
-    K = np.dot(np.transpose(Bu), Bu) / (x*y)
+    K = np.dot(np.transpose(Bu), Bu) / (x * y)
     
     iK = np.linalg.inv(K)
     
@@ -417,7 +440,7 @@ def TCIMF(original, target, Non_target):
     
     B = original.reshape(x * y, z)
 	
-    R = np.dot(np.transpose(B), B) / (x*y)
+    R = np.dot(np.transpose(B), B) / (x * y)
 	
     IR = np.linalg.inv(R)
     
