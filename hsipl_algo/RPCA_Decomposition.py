@@ -6,7 +6,22 @@ Created on Fri Sep 11 14:32:48 2020
 """
 
 import numpy as np
+import numpy.matlib as mb
 from scipy.sparse import csr_matrix
+
+def GA(M):
+    L = algo(M)
+    
+    new_min = np.min(M[:])
+    new_max = np.max(M[:])
+    
+    L = nma_rescale(L, new_min, new_max)
+    
+    L = mb.repmat(L, 1, M.shape[1])
+    
+    S = M - L
+    
+    return L, S
 
 def Godec(data):
     x, y = data.shape
@@ -70,3 +85,47 @@ def Godec(data):
         S = S.transpose()
         
     return L, S
+
+def algo(data):
+    X = data.transpose()
+
+    K = 1
+    epsilon = 10 * np.finfo(float).eps
+    
+    N, D = X.shape
+    
+    vectors = np.zeros([D, K])
+    
+    vectors[:] = np.NAN
+    
+    for k in range(K):
+        mu = np.random.rand(D, 1) - 0.5
+        
+        mu = mu / np.linalg.norm(mu)
+        
+        for iterate in range(3):
+            dots = np.dot(X, mu)
+            mu = (np.dot(dots.transpose(), X)).transpose()
+            mu = mu / np.linalg.norm(mu)
+            
+        for iterate in range(N):
+            prev_mu = mu.copy()
+            dot_signs = np.sign(np.dot(X, mu))
+            mu = np.dot(dot_signs.transpose(), X)
+            mu = (mu / np.linalg.norm(mu)).transpose()
+            
+            if np.max(abs(mu - prev_mu)) < epsilon:
+                break
+            
+        if k == 0:
+            vectors[:, k] = mu.reshape(D)
+            X = X - np.dot(np.dot(X, mu), mu.transpose())
+    
+    return vectors
+
+def nma_rescale(A, new_min, new_max):
+    current_max = np.max(A[:])
+    current_min = np.min(A[:])
+    C =((A - current_min) * (new_max - new_min)) / (current_max - current_min) + new_min
+    
+    return C
