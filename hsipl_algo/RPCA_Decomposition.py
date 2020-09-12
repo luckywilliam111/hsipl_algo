@@ -128,7 +128,7 @@ def OPRMF(data):
     
     L = OPRMF_algo(X)
     
-    S = data - L
+    S = X - L
     
     return L, S
 
