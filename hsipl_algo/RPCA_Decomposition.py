@@ -7,7 +7,9 @@ Created on Fri Sep 11 14:32:48 2020
 
 import numpy as np
 import numpy.matlib as mb
+from scipy.stats import trim_mean
 from scipy.sparse import csr_matrix
+from scipy.sparse.linalg import svds
 
 def GA(M):
     L = GA_algo(M)
@@ -121,6 +123,106 @@ def Godec(data):
         L = L.transpose()
         S = S.transpose()
         
+    return L, S
+
+def GreGoDec(M):
+    rank = 1
+    tau = 7
+    power = 5
+    tol = 1e-3
+    k = 1
+    
+    m, n = M.shape
+    
+    if m < n:
+        M = M.transpose()
+        
+    normD = np.linalg.norm(M[:])
+    
+    rankk = np.int(np.round(rank / k))
+    
+    error = np.zeros([rankk*power, 1])
+    
+    X, s, Y = svds(M, k, which='LM')
+    
+    X = X * s
+    
+    L = np.dot(X, Y)
+    
+    S = wthresh(M - L, 's', tau)
+    
+    T = M - L - S
+    
+    error = []
+    
+    error.append(np.linalg.norm(T[:]) / normD)
+    
+    iii = 1
+    
+    stop = False
+    
+    alf = 0
+    
+    for r in range(rankk):
+        alf = 0
+        increment = 1
+        
+        for iterate in range(power):
+            X = np.dot(L, Y.transpose())
+            
+            X, R = np.linalg.qr(X)
+            
+            Y = np.dot(X.transpose(), L)
+            
+            L = np.dot(X, Y)
+            
+            T = M - L
+            
+            S = wthresh(T, 's', tau)
+            
+            T = T - S
+            
+            ii = iii + iterate
+            
+            error.append(np.linalg.norm(T[:]) / normD)
+            
+            if error[ii] < tol:
+                stop = True
+                break
+                
+            ratio = error[ii] / error[ii-1]
+            
+            if ratio >= 1.1:
+                increment = np.max([0.1 * alf, 0.1 * increment])
+                X = X1.copy()
+                Y = Y1.copy()
+                S = S1.copy()
+                T = T1.copy()
+                error[ii] = error[ii-1]
+                alf = 0
+            elif ratio > 0.7:
+                increment = np.max([increment, 0.25 * alf])
+                alf = alf + increment
+                
+            X1 = X.copy()
+            Y1 = Y.copy()
+            L1 = L.copy()
+            S1 = S.copy()
+            T1 = T.copy()
+            
+            L = L + (1 + alf) * T
+            
+            if stop:
+                break
+            
+    L = np.dot(X, Y)
+    
+    if m < n:
+        L = L.transpose()
+        S = S.transpose()
+        
+    S = M - L
+    
     return L, S
 
 def OPRMF(data):
@@ -252,6 +354,117 @@ def OPRMF_algo(X):
         
     return L
 
+def PCP(M):
+    lambd = 1 / np.sqrt(np.max(M.shape))
+    
+    tol = 1e-5
+    
+    beta = 0.25 / np.mean(abs(M[:]))
+    
+    maxit = 1000
+    
+    m, n = M.shape
+    
+    S = np.zeros([m, n])
+    
+    L = np.zeros([m, n])
+    
+    Lambd = np.zeros([m, n])
+    
+    for i in range(maxit):
+        nrmLS = np.linalg.norm(np.hstack([S, L]))
+        
+        X = Lambd / beta + M
+        
+        Y = X - L
+        
+        dS = S.copy()
+        
+        S = np.sign(Y) * (abs(Y) - lambd / beta)
+        
+        dS = S - dS
+        
+        Y = X - S
+        
+        dL = L
+        
+        U, D, V = svdecon(Y)
+        
+        VT = V.transpose()
+        
+        D = np.diag(D)
+        
+        ind = np.argwhere(D > (1 / beta))
+        
+        D = np.diag(D[ind] - (1 / beta))
+        
+        L = np.dot(np.dot(U[:, ind[0].reshape(1)], D.reshape(1, 1)), VT[ind[0].reshape(1), :])
+        
+        dL = L - dL
+        
+        RelChg = np.linalg.norm(np.hstack([dS, dL])) / (1 + nrmLS)
+        
+        if RelChg < tol:
+            break
+        
+        Lambd = Lambd - beta * (S + L - M)
+        
+    return L, S
+
+def TGA(M):
+    L = TGA_algo(M)
+    
+    new_min = np.min(M[:])
+    new_max = np.max(M[:])
+    
+    L = nma_rescale(L, new_min, new_max)
+    
+    L = mb.repmat(L, 1, M.shape[1])
+    
+    S = M - L
+    
+    return L, S
+
+def TGA_algo(data):
+    X = data.transpose()
+    
+    percent = 0.5
+    
+    K = 1
+    
+    N, D = X.shape
+    
+    vectors = np.zeros([D, K])
+        
+    vectors[:] = np.NAN
+    
+    epsilon = 1e-5
+    
+    for k in range(K):
+        mu = np.random.rand(D, 1) - 0.5
+            
+        mu = mu / np.linalg.norm(mu)
+        
+        for iterate in range(3):
+            dots = np.dot(X, mu)
+            mu = (np.dot(dots.transpose(), X)).transpose()
+            mu = mu / np.linalg.norm(mu)
+            
+        for iterate in range(N):
+            prev_mu = mu.copy()
+            dot_signs = np.sign(np.dot(X, mu))
+            mu = trim_mean(X * dot_signs.reshape(N, 1), percent)
+            mu = (mu[:] / np.linalg.norm(mu)).reshape(D, 1)
+            
+            if np.max(abs(mu - prev_mu)) < epsilon:
+                break
+                
+        if k == 0:
+            vectors[:, k] = mu.reshape(D)
+            X = X - np.dot(np.dot(X, mu), mu.transpose())
+            
+    return vectors
+
 def nma_rescale(A, new_min, new_max):
     current_max = np.max(A[:])
     current_min = np.min(A[:])
@@ -273,3 +486,34 @@ def normalize(X):
     X = X * mul
     
     return X
+
+def svdecon(X):
+    m, n = X.shape
+    
+    C = np.dot(X.transpose(), X)
+    
+    D, V = np.linalg.eig(C)
+    
+    ix = np.argsort(-1 * abs(D))
+    
+    V = V[:, ix]
+    
+    U = np.dot(X, V)
+    
+    s = np.sqrt(D[ix])
+    
+    U = U / s.reshape(1, s.shape[0])
+    
+    S = np.diag(s)
+    
+    return U, S, V
+
+def wthresh(X, SORH, T):
+    if (SORH == 'h'):
+        Y = X * (np.abs(X) > T)
+        return Y
+    elif (SORH == 's'):
+        res = (np.abs(X) - T)
+        res = (res + np.abs(res))/2.
+        Y = np.sign(X) * res
+        return Y
