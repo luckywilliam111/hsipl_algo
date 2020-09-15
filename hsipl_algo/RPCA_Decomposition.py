@@ -62,6 +62,57 @@ def GA_algo(data):
     
     return vectors
 
+def GM(M):
+    L = GM_algo(M)
+    
+    new_min = np.min(M[:])
+    new_max = np.max(M[:])
+    
+    L = nma_rescale(L, new_min, new_max)
+    
+    L = mb.repmat(L, 1, M.shape[1])
+    
+    S = M - L
+    
+    return L, S
+
+def GM_algo(data):
+    X = data.transpose()
+    
+    K = 1
+    epsilon = 1e-5
+    
+    N, D = X.shape
+    
+    vectors = np.zeros([D, K])
+    
+    vectors[:] = np.NAN
+    
+    for k in range(K):
+        mu = np.random.rand(D, 1) - 0.5
+        
+        mu = mu / np.linalg.norm(mu)
+        
+        for iterate in range(3):
+            dots = np.dot(X, mu)
+            mu = (np.dot(dots.transpose(), X)).transpose()
+            mu = mu / np.linalg.norm(mu)
+            
+        for iterate in range(N):
+            prev_mu = mu.copy()
+            dot_signs = np.sign(np.dot(X, mu))
+            mu = (np.median(X / dot_signs, 0)).reshape(D, 1)
+            mu = mu[:] / np.linalg.norm(mu)
+            
+            if np.max(abs(mu - prev_mu)) < epsilon:
+                break
+            
+        if k == 0:
+            vectors[:, k] = mu.reshape(D)
+            X = X - np.dot(np.dot(X, mu), mu.transpose())
+    
+    return vectors
+
 def Godec(data):
     x, y = data.shape
     
@@ -488,8 +539,6 @@ def normalize(X):
     return X
 
 def svdecon(X):
-    m, n = X.shape
-    
     C = np.dot(X.transpose(), X)
     
     D, V = np.linalg.eig(C)
