@@ -11,21 +11,7 @@ from scipy.stats import trim_mean
 from scipy.sparse import csr_matrix
 from scipy.sparse.linalg import svds
 
-def GA(M):
-    L = GA_algo(M)
-    
-    new_min = np.min(M[:])
-    new_max = np.max(M[:])
-    
-    L = nma_rescale(L, new_min, new_max)
-    
-    L = mb.repmat(L, 1, M.shape[1])
-    
-    S = M - L
-    
-    return L, S
-
-def GA_algo(data):
+def GA(data):
     X = data.transpose()
 
     K = 1
@@ -59,24 +45,19 @@ def GA_algo(data):
         if k == 0:
             vectors[:, k] = mu.reshape(D)
             X = X - np.dot(np.dot(X, mu), mu.transpose())
+            
+    new_min = np.min(data[:])
+    new_max = np.max(data[:])
     
-    return vectors
-
-def GM(M):
-    L = GM_algo(M)
+    L = nma_rescale(vectors, new_min, new_max)
     
-    new_min = np.min(M[:])
-    new_max = np.max(M[:])
+    L = mb.repmat(L, 1, data.shape[1])
     
-    L = nma_rescale(L, new_min, new_max)
-    
-    L = mb.repmat(L, 1, M.shape[1])
-    
-    S = M - L
+    S = data - L
     
     return L, S
 
-def GM_algo(data):
+def GM(data):
     X = data.transpose()
     
     K = 1
@@ -110,8 +91,17 @@ def GM_algo(data):
         if k == 0:
             vectors[:, k] = mu.reshape(D)
             X = X - np.dot(np.dot(X, mu), mu.transpose())
+            
+    new_min = np.min(data[:])
+    new_max = np.max(data[:])
     
-    return vectors
+    L = nma_rescale(vectors, new_min, new_max)
+    
+    L = mb.repmat(L, 1, data.shape[1])
+    
+    S = data - L
+    
+    return L, S
 
 def Godec(data):
     x, y = data.shape
@@ -209,10 +199,8 @@ def GreGoDec(M):
     error.append(np.linalg.norm(T[:]) / normD)
     
     iii = 1
-    
-    stop = False
-    
     alf = 0
+    stop = False
     
     for r in range(rankk):
         alf = 0
@@ -279,13 +267,6 @@ def GreGoDec(M):
 def OPRMF(data):
     X = normalize(data)
     
-    L = OPRMF_algo(X)
-    
-    S = X - L
-    
-    return L, S
-
-def OPRMF_algo(X):
     rk = 2
     lambdaU = 1
     lambdaV = 1
@@ -296,7 +277,6 @@ def OPRMF_algo(X):
     mask = np.ones([x, y])
     
     maxIter = 40
-    
     startIndex = 1
     
     U = np.random.randn(x, rk)
@@ -348,11 +328,9 @@ def OPRMF_algo(X):
                 s = j
                 
             for i in range(s, j+1, 1):
-                T = np.zeros([U.shape[1], x])
                 temp1 = csr_matrix(r[:, i].reshape(x, 1)).toarray() * mask[:, i].reshape(x, 1)
-                for p in range(T.shape[0]):
-                    for q in range(T.shape[1]):
-                        T[p, q] = U.transpose()[p, q] * temp1[q]
+                
+                T = (U * temp1).transpose()
                         
                 V[:, i] = (np.dot(np.linalg.inv(np.dot(T, U) + lambdaV * IS), np.dot(T, (Y[:, i]).reshape(x, 1)))).reshape(T.shape[0])
                 
@@ -403,15 +381,14 @@ def OPRMF_algo(X):
                 L[:, j] = (np.dot(U, V[:, j].reshape(V.shape[0], 1))).reshape(x)
                 break
         
-    return L
+    S = X - L
+        
+    return L, S
 
 def PCP(M):
     lambd = 1 / np.sqrt(np.max(M.shape))
-    
     tol = 1e-5
-    
     beta = 0.25 / np.mean(abs(M[:]))
-    
     maxit = 1000
     
     m, n = M.shape
@@ -462,25 +439,175 @@ def PCP(M):
         
     return L, S
 
-def TGA(M):
-    L = TGA_algo(M)
+def PRMF(data):
+    X = normalize(data)
     
-    new_min = np.min(M[:])
-    new_max = np.max(M[:])
+    rk = 2
+    lambdaU = 1
+    lambdaV = 1
+    tol = 1e-2
+    maxIter = 40
     
-    L = nma_rescale(L, new_min, new_max)
+    m, n = X.shape
     
-    L = mb.repmat(L, 1, M.shape[1])
+    U = np.random.randn(m, rk)
     
+    V = np.random.randn(rk, n)
+    
+    lambd = 1
+    eps = 1e-3
+    
+    r = abs(X - np.dot(U, V))
+    
+    r = (r < eps).astype(np.int) * eps + (r > eps).astype(np.int) * r
+    
+    r = lambd / r
+    
+    c = 0
+    
+    IS = csr_matrix(np.eye(rk)).toarray()
+    
+    while True:
+        c = c + 1
+        oldR = r.copy()
+        
+        for i in range(n):
+            temp1 = csr_matrix(r[:, i].reshape(m, 1)).toarray()
+            
+            T = (U * temp1).transpose()
+                    
+            V[:, i] = (np.dot(np.linalg.inv(np.dot(T, U) + lambdaV * IS), np.dot(T, (X[:, i]).reshape(m, 1)))).reshape(T.shape[0])
+            
+            r[:, i] = (abs(X[:, i].reshape(m, 1) - np.dot(U, V[:, i].reshape(V.shape[0], 1)))).reshape(m)
+            
+            r[:, i] = (r[:, i] < eps).astype(np.int) * eps + (r[:, i] > eps).astype(np.int) * r[:, i]
+            
+            r[:, i] = lambd / r[:, i]
+        
+        for i in range(m):
+            T = np.dot(V, np.diag((csr_matrix(r[i, :].reshape(n, 1)).toarray()).reshape(n)))
+            
+            U[i, :] = (np.dot(np.linalg.inv(np.dot(T, V.transpose()) + lambdaU * IS), np.dot(T, (X[i, :]).reshape(n, 1)))).reshape(T.shape[0])
+            
+            r[i, :] = (abs(X[i, :].reshape(n, 1) - np.dot(V.transpose(), U[i, :].reshape(U.shape[1], 1)))).reshape(n)
+            
+            r[i, :] = (r[i, :] < eps).astype(np.int) * eps + (r[i, :] > eps).astype(np.int) * r[i, :]
+            
+            r[i, :] = lambd / r[i, :]
+        
+        if ((np.sum(abs(r.reshape(m * n) - oldR.reshape(m * n)), 0) / np.sum(oldR[:].reshape(m * n), 0)) < tol) and (c != 1) or (c > maxIter):
+            break
+    
+    L = np.dot(U, V)
+    
+    S = X - L
+    
+    return L, S
+
+def SSGoDec(M):
+    rank = 1
+    tau = 8
+    power = 0
+    iter_max = 1e+2
+    error_bound = 1e-3
+    iterate = 1
+    
+    RMSE=[]
+    
+    m, n = M.shape
+    
+    if m < n:
+        M = M.transpose()
+        
+    L = M.copy()
+    
+    S = csr_matrix(np.zeros([m, n])).toarray()
+    
+    while True:
+        Y2 = np.random.randn(n, rank)
+        
+        for i in range(power + 1):
+            Y1 = np.dot(L, Y2)
+            Y2 = np.dot(L.transpose(), Y1)
+            
+        Q, R = np.linalg.qr(Y2)
+            
+        L_new = np.dot(np.dot(L, Q), Q.transpose())
+        
+        T = L - L_new + S
+            
+        L = L_new.copy()
+        
+        S = wthresh(T, 's', tau)
+        
+        T = T - S
+        
+        RMSE.append(np.linalg.norm(T[:]))
+        
+        if (RMSE[-1] < error_bound) or (iterate > iter_max):
+            break
+        else:
+            L = L + T
+            
+        iterate = iterate + 1
+        
+    LS = L+S
+    
+    error = np.linalg.norm(LS[:] - M[:]) / np.linalg.norm(M[:])
+    
+    if m < n:
+        LS = LS.transpose()
+        L = L.transpose()
+        S = S.transpose()
+        
     S = M - L
     
     return L, S
 
-def TGA_algo(data):
+def SVT(D):
+    lambd = 1 / np.sqrt(np.max(D.shape))
+    tau = 1e+4
+    delta = 0.9
+    EPSILON_PRIMAL = 5e-4
+    MAX_ITER = 25000
+    
+    m, n = D.shape
+    
+    Y = np.zeros([m, n])
+    
+    A = np.zeros([m, n])
+    
+    E = np.zeros([m, n])
+    
+    iterate = 0
+    
+    converged = False
+    
+    while not(converged):
+        iterate = iterate + 1
+        
+        U, S, V = np.linalg.svd(Y, 0)
+        
+        A = np.dot(np.dot(U, np.diag(pos(S - tau))), V)
+        
+        E = np.sign(Y) * pos(abs(Y) - lambd * tau)
+        
+        M = D - A - E
+        
+        Y = Y + delta * M
+        
+        if ((np.linalg.norm(D - A - E, 'fro') / np.linalg.norm(D, 'fro')) < EPSILON_PRIMAL) or (iterate >= MAX_ITER):
+            converged = True
+            
+    L = A.copy()
+    S = E.copy()
+            
+    return L, S
+
+def TGA(data):
     X = data.transpose()
     
     percent = 0.5
-    
     K = 1
     
     N, D = X.shape
@@ -514,7 +641,16 @@ def TGA_algo(data):
             vectors[:, k] = mu.reshape(D)
             X = X - np.dot(np.dot(X, mu), mu.transpose())
             
-    return vectors
+    new_min = np.min(data[:])
+    new_max = np.max(data[:])
+    
+    L = nma_rescale(vectors, new_min, new_max)
+    
+    L = mb.repmat(L, 1, data.shape[1])
+    
+    S = data - L
+            
+    return L, S
 
 def nma_rescale(A, new_min, new_max):
     current_max = np.max(A[:])
@@ -537,6 +673,9 @@ def normalize(X):
     X = X * mul
     
     return X
+
+def pos(A):
+    return A * np.double(A > 0)
 
 def svdecon(X):
     C = np.dot(X.transpose(), X)
