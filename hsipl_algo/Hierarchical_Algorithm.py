@@ -15,7 +15,7 @@ def awgn(x, SNR):
     
     return x + noise
 
-def hACE(HIM, d, SNR, lamb, epsilon, max_iter, add_noise):
+def hKACE(HIM, d, SNR, lamb, epsilon, max_iter, add_noise):
     x, y, z = HIM.shape
     
     X = np.transpose(HIM.reshape(x * y, z))
@@ -32,9 +32,7 @@ def hACE(HIM, d, SNR, lamb, epsilon, max_iter, add_noise):
     for i in range(max_iter):
         X = X * Weight
         
-        index = np.argwhere(Weight > 0)
-        
-        u = np.sum(X, 1) / index.shape[0]
+        u = np.mean(np.transpose(X), 0)
         
         rep_u = u.reshape(z, 1)
         
@@ -78,9 +76,7 @@ def hAMF(HIM, d, SNR, lamb, epsilon, max_iter, add_noise):
     for i in range(max_iter):
         X = X * Weight
         
-        index = np.argwhere(Weight > 0)
-        
-        u = np.sum(X, 1) / index.shape[0]
+        u = np.mean(np.transpose(X), 0)
         
         rep_u = u.reshape(z, 1)
         
@@ -166,9 +162,7 @@ def hKMD(HIM, d, SNR, lamb, epsilon, max_iter, add_noise):
     for i in range(max_iter):
         X = X * Weight
         
-        index = np.argwhere(Weight > 0)
-        
-        u = np.sum(X, 1) / index.shape[0]
+        u = np.mean(np.transpose(X), 0)
         
         rep_u = u.reshape(z, 1)
         
