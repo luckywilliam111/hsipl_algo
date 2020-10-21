@@ -7,6 +7,7 @@ Created on Tue Sep  8 00:34:45 2020
 
 import numpy as np
 import scipy.special as ss
+from scipy.linalg import sqrtm
 
 def HFC(HIM, t):
     x, y, z = HIM.shape
@@ -37,5 +38,31 @@ def HFC(HIM, t):
             Result[i] = 1
             
     number = int(np.sum(Result, 0))
+    
+    return number
+
+def NWHFC(HIM, t):
+    x, y, z = HIM.shape
+    
+    pxl_no = x*y
+    r = np.reshape(np.transpose(HIM), (z, x*y))
+    
+    R = np.dot(r, np.transpose(r)) / pxl_no
+    u = (np.mean(r, 1)).reshape(z, 1)
+    K = R - np.dot(u, np.transpose(u))
+    
+    K_Inverse = np.linalg.inv(K)
+    
+    tuta = np.diag(K_Inverse)
+    
+    K_noise = 1 / tuta
+    
+    K_noise = np.diag(K_noise)
+    
+    image = np.dot(np.linalg.inv(sqrtm(K_noise)), r)
+    
+    image = np.transpose(np.reshape(image, (z, y, x)))
+    
+    number = HFC(image, t)
     
     return number

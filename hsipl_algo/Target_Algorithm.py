@@ -26,6 +26,27 @@ def AMF(original, target):
     
     return AMF_result
 
+def AMSD(HIM, d, U):
+    x, y, z = HIM.shape
+    
+    B = np.reshape(np.transpose(HIM), (z, x*y))
+
+    I = np.eye(z)
+    
+    E = np.hstack([d, U])
+    
+    P_B = I - (np.dot(U, np.linalg.pinv(U)))
+    
+    P_Z = I - (np.dot(E, np.linalg.pinv(E)))
+    
+    tmp = P_B - P_Z
+    
+    dr = (np.sum(np.dot(B.transpose(), tmp) * B.transpose(), 1)) / (np.sum(np.dot(B.transpose(), P_Z) * B.transpose(), 1))
+    
+    AMSD_result = np.transpose(np.reshape(dr, [y, x]))
+    
+    return AMSD_result
+
 def ASW_CEM(HIM, d, Sprout_HIM, minwd, midwd, maxwd, wd_range, sprout_rate):
     x, y, z = HIM.shape
     
@@ -167,6 +188,26 @@ def JMD(HIM, target):
      
     return JMD_result
 
+def KLSOSP(HIM, d, U, sig):
+    x, y, z = HIM.shape
+    
+    KLSOSP_result = np.zeros([x, y])
+
+    KdU = kernelized(d, U, sig)
+    KUU = kernelized(U, U, sig)
+    IKUU = np.linalg.inv(KUU)
+    
+    for i in range(x):
+        for j in range(y):
+            r = HIM[i, j, :].reshape(z, 1)
+            
+            Kdr = kernelized(d, r, sig)
+            KUr = kernelized(U, r, sig)
+            
+            KLSOSP_result[i, j] = Kdr - np.dot(np.dot(KdU, IKUU), KUr)
+            
+    return KLSOSP_result
+
 def KMD(original, target):
     x, y, z = original.shape
 
@@ -230,6 +271,22 @@ def K_ACE(original, target):
     
     return K_ACE_result
 
+def LSOSP(original, target, Non_target):
+    x, y, z = original.shape
+    
+    B = np.reshape(np.transpose(original), (z, x*y))
+    I = np.eye(z)
+    
+    P = I - np.dot(np.dot(Non_target, (np.linalg.inv(np.dot(np.transpose(Non_target), Non_target)))), np.transpose(Non_target))
+    
+    lsosp = (np.dot(target.transpose(), P)) / (np.dot(np.dot(target.transpose(), P), target))
+    
+    dr = np.dot(lsosp, B)
+    
+    LSOSP_result = np.transpose(np.reshape(dr, [y, x]))
+    
+    return LSOSP_result
+
 def MF(original, target):
     x, y, z = original.shape
 
@@ -275,7 +332,7 @@ def OSP(original, target, Non_target):
     B = (original.reshape(x * y, z)).transpose()
     I = np.eye(z)
     
-    P = I - np.dot(np.dot(Non_target, (np.power(np.dot(np.transpose(Non_target), Non_target), -1))), np.transpose(Non_target))
+    P = I - np.dot(np.dot(Non_target, (np.linalg.inv(np.dot(np.transpose(Non_target), Non_target)))), np.transpose(Non_target))
     
     dr = np.dot(np.dot(np.transpose(target), P), B)
     
@@ -482,3 +539,15 @@ def TD(HIM, target):
     TD_result = dr.reshape(x, y)
     
     return TD_result
+
+def kernelized(x, y, sig):
+    x_1, y_1 = x.shape
+    x_2, y_2 = y.shape
+    
+    results = np.zeros([y_1, y_2])
+    
+    for i in range(y_1):
+        for j in range(y_2):
+            results[i, j] = np.exp((-1/2) * np.power(np.linalg.norm(x[:, i] - y[:, j]), 2) / (np.power(sig, 2)))
+    
+    return results
