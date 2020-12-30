@@ -1,8 +1,8 @@
 # Algorithm Package
 
-這是一個由WEN所開發/整合而成的演算法套件，演算法主要適用於高光譜影像，包括影像前處理與背景抑制演算法。
-取得方式可以透過cmd輸入指令 pip install hsipl-algo 取得
+這是一個由WEN所開發/整合而成的演算法套件，演算法主要適用於高光譜影像，包括影像前處理與背景抑制演算法，取得方式可以透過cmd輸入指令 pip install hsipl-algo 取得
 
+演算法分類如下：
 * 影像前處理演算法
 	* 端元選擇
 		* PPI
@@ -11,15 +11,15 @@
 		* N-FINDR
 	* 波段選擇
 		* 基於CEM-波段選擇
-			* CEM_BCC
-			* CEM_BCM
-			* CEM_BDM
+			* CEM-BCC
+			* CEM-BCM
+			* CEM-BDM
 		* 基於相關係數-波段選擇
-			* BS_Corrcoef
+			* BS-Corrcoef
 		* 基於熵-波段選擇
-			* BS_Entropy
+			* BS-Entropy
 		* 基於標準差-波段選擇
-			* BS_STD
+			* BS-STD
 		* 基於約束目標-波段選擇
 		* 基於融合波段約束目標-波段選擇
 		* 基於均勻分配-波段選擇
