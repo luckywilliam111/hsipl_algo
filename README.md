@@ -13,6 +13,19 @@
 		* 基於主成分分析法-波段選擇
 		* 基於獨立成分分析法-波段選擇
 	* 影像分解
+		* RPCA-分解法
+			* RPCA-Kernel
+				* RPCA-Kernel
+					* GA
+					* GM
+					* Godec
+					* GreGoDec
+					* OPRMF
+					* PCP
+					* PRMF
+					* SSGoDec
+					* SVT
+					* TGA
 	
 * 背景抑制演算法
 	* 目標偵測演算法
