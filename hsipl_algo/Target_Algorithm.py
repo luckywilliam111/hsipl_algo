@@ -55,15 +55,15 @@ def ASW_CEM(HIM, d, Sprout_HIM, minwd, midwd, maxwd, wd_range, sprout_rate):
     K = midwd
     
     for i in range(x):
+        print(i)
         j = 0
         countnum = 0
         while j < y:
             half = np.fix(K / 2)
-            
-            x1 = np.int(i - half)
-            x2 = np.int(i + half)
-            y1 = np.int(j - half)
-            y2 = np.int(j + half)
+            x1 = i - half
+            x2 = i + half
+            y1 = j - half
+            y2 = j + half
             
             if x1 <= 0:
                 x1 = 0
@@ -75,11 +75,14 @@ def ASW_CEM(HIM, d, Sprout_HIM, minwd, midwd, maxwd, wd_range, sprout_rate):
             elif y2 >= y:
                 y2 = y
             
-            xx, yy, zz = Sprout_HIM.shape
-            Sprout = Sprout_HIM.reshape(xx * yy, zz)
-            temp = np.sum(np.sum(Sprout[x1:x2, y1:y2], 0), 0)
-            sumsprout = temp
-            num = Sprout[x1:x2, y1:y2].shape[0] * Sprout[x1:x2, y1:y2].shape[1]
+            x1 = np.int(x1)
+            x2 = np.int(x2)
+            y1 = np.int(y1)
+            y2 = np.int(y2)
+            
+            
+            sumsprout = np.sum(np.sum(Sprout_HIM[x1:x2, y1:y2], 0), 0)
+            num = Sprout_HIM[x1:x2, y1:y2].shape[0] * Sprout_HIM[x1:x2, y1:y2].shape[1]
             
             if (sumsprout / num) < (sprout_rate - 0.001) and countnum == 0:
                 K = K - wd_range
@@ -99,13 +102,13 @@ def ASW_CEM(HIM, d, Sprout_HIM, minwd, midwd, maxwd, wd_range, sprout_rate):
                 Local_HIM = HIM[x1:x2, y1:y2,:]
                 
                 xxx, yyy, zzz = Local_HIM.shape
-                X = Local_HIM.reshape(xxx * yyy, zzz)
-                S = np.dot(np.transpose(X), X)
-                r = np.reshape(HIM[i, j, :], [z, 1])
+                X = np.reshape(np.transpose(Local_HIM), (zzz, xxx*yyy))
+                S = np.dot(X, np.transpose(X))
+                r = np.reshape(HIM[i, j, :], [z,1])
 				
-                IS = np.linalg.inv(S)
+                S = np.linalg.inv(S)
                 
-                mid_ASW_CEM_result[i, j] = np.dot(np.dot(np.transpose(r), IS), d) / np.dot(np.dot(np.transpose(d), IS), d)
+                mid_ASW_CEM_result[i, j] = np.dot(np.dot(np.transpose(r), S), d) / np.dot(np.dot(np.transpose(d), S), d)
                 wd_matrix[i, j] = K
                 K = midwd
                 countnum = 0
