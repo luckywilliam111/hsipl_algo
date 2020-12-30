@@ -100,6 +100,13 @@
 				* SID-tan(SAM)
 				* SID-sin(SAM)
 			
+			* 未分類
+				* CBD
+				* JMD
+				* OPD
+				* TD
+				* 廣義相似比測試(GLRT)
+			
 		* 權重式偵測演算法
 	* 異常偵測演算法
 
