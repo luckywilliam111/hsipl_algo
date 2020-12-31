@@ -5,25 +5,61 @@
 ![image](image/install.png)
 
 ```
-example_yolov3
-|---- 0_model_darknet
-|  |---- yolov3-tiny_dms_3l.cfg
-|  |---- yolov3-tiny_dms_3l_best.weights
+hsipl-algo
+|---- build
+|  |---- bdist.win-amd64
+|  |---- lib
+|     |---- hsipl_algo
+|       |---- Anomaly_Algorithm.py
+|       |---- Calc_Band.py
+|       |---- CEM_BS_Method.py
+|       |---- CT_BS_Method.py
+|       |---- Find_EndMember.py
+|       |---- get_Threshold.py
+|       |---- Hierarchical_Algorithm.py
+|       |---- Other_BS_Method.py
+|       |---- RPCA_Decomposition.py
+|       |---- Target_Algorithm.py
+|       |---- Weighted_Target_Algorithm.py
 |
-|---- 1_model_caffe
-|---- 2_model_for_quantize
-|---- 3_model_after_quantize
-|---- 4_model_elf
+|---- dist
+|  |---- hsipl_algo-1.0.17.tar
+|  |---- hsipl_algo-1.0.17-py3-none-any.whl
 |
-|---- 5_file_for_test
-|  |---- DNNDK_caliDataListOut.py
+|---- hsipl_algo
+|  |---- Anomaly_Algorithm.py
+|  |---- Calc_Band.py
+|  |---- CEM_BS_Method.py
+|  |---- CT_BS_Method.py
+|  |---- Find_EndMember.py
+|  |---- get_Threshold.py
+|  |---- Hierarchical_Algorithm.py
+|  |---- Other_BS_Method.py
+|  |---- RPCA_Decomposition.py
+|  |---- Target_Algorithm.py
+|  |---- Weighted_Target_Algorithm.py
 |
-|---- 0_convert.sh
-|---- 0_test_darknet.sh
-|---- 1_test_caffe.sh
-|---- 2_quantize.sh
-|---- 3_compile.sh
-|---- dpu-12-04-2020-11-45.dcf
+|---- hsipl_algo.egg-info
+|  |---- dependency_links.txt
+|  |---- PKG-INFO
+|  |---- SOURCES.txt
+|  |---- top_level.txt
+|
+|---- image
+|  |---- install.png
+|  |---- apple.jpg
+|  |---- Low_Rank_Matrix.png
+|  |---- Sparse_Matrix.png
+|  |---- Target_Detection.png
+|  |---- Anomaly_Detection.png
+|  |---- 
+|  |---- 
+|  |---- 
+|
+|---- .gitattributes
+|---- LICENSE
+|---- README.md
+|---- setup.py
 ```
 
 演算法分類如下：
