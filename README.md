@@ -122,7 +122,7 @@
 			* 統一目標檢測器(UTD)
 			* 統一目標自相關濾波器-Reed-Xiaoli檢測器(UTD-RXD)
 
-```
+```python
 import numpy as np
 import matplotlib.pyplot as plt
 import hsipl_algo.Target_Algorithm as hTA
