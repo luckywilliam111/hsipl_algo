@@ -49,8 +49,8 @@
 			* 主成分分析法-波段選擇(PCA-BS)
 			* 獨立成分分析法-波段選擇(ICA-BS)
 	* 影像分解
-		* RPCA-分解法
-			* RPCA-Kernel
+		* Robust-PCA-分解法
+			* Robust-PCA-Kernel
 				* GA-Kernel
 				* GM-Kernel
 				* Godec-Kernel
@@ -121,6 +121,42 @@
 			* 正規化-RXD(N-RXD)
 			* 統一目標檢測器(UTD)
 			* 統一目標自相關濾波器-Reed-Xiaoli檢測器(UTD-RXD)
+
+# Robust PCA Decomposition Example Code
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+import hsipl_algo.RPCA_Decomposition as hRD
+
+data = plt.imread('apple.jpg')
+
+plt.figure()
+plt.imshow(data)
+plt.show()
+
+data = np.double(data)
+
+x, y, z = data.shape
+
+re_data = data.reshape(x * y, z)
+
+L, S = hRD.GA(re_data)
+
+L = L.reshape(x, y, z)
+
+S = S.reshape(x, y, z)
+
+plt.figure()
+plt.imshow(L / 255)
+plt.show()
+
+plt.figure()
+plt.imshow(S / 255)
+plt.show()
+```
+
+<img src="image/apple.jpg" alt="drawing" width="220" height="175" title="Apple Image"><img src="image/Low_Rank_Matrix.png" alt="drawing" width="220" height="175"title="Low-Rank Matrix"><img src="image/Sparse_Matrix.png" alt="drawing" width="220" height="175" title="Sparse-Matrix">
 
 # Target / Anomaly Detection Example Code
 
