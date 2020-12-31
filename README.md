@@ -147,6 +147,6 @@ plt.imshow(result, cmap='gray')
 plt.show()
 ```
 
-![Target_Detection](image/apple.jpg)![image](image/Target_Detection.png)
+![image](image/apple.jpg)![image](image/Target_Detection.png)<img src="image/Target_Detection.png" width="250" "300" title="hover text">
 
 [WEN-Github](https://github.com/luckywilliam111/hsipl_algo.git)
