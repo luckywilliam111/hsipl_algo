@@ -9,6 +9,9 @@
 		* 自動目標點生成程序(ATGP)
 		* 單純形增長算法(SGA)
 		* N-FINDR
+	* 估計波段選擇數
+		* HFC
+		* NWHFC
 	* 波段選擇
 		* 基於CEM-波段選擇
 			* CEM-BCC
