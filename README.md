@@ -147,7 +147,7 @@ plt.imshow(result, cmap='gray')
 plt.show()
 ```
 
-<img src="image/apple.jpg" alt="drawing" width="365" height="420"/>
+<img src="image/apple.jpg" alt="drawing" width="420" height="365"/>
 
 ![image](./image/apple.jpg =365x420)
 ![image](./image/Target_Detection.png =365x420)
