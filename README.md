@@ -4,6 +4,28 @@
 
 ![image](image/install.png)
 
+```
+example_yolov3
+|---- 0_model_darknet
+|  |---- yolov3-tiny_dms_3l.cfg
+|  |---- yolov3-tiny_dms_3l_best.weights
+|
+|---- 1_model_caffe
+|---- 2_model_for_quantize
+|---- 3_model_after_quantize
+|---- 4_model_elf
+|
+|---- 5_file_for_test
+|  |---- DNNDK_caliDataListOut.py
+|
+|---- 0_convert.sh
+|---- 0_test_darknet.sh
+|---- 1_test_caffe.sh
+|---- 2_quantize.sh
+|---- 3_compile.sh
+|---- dpu-12-04-2020-11-45.dcf
+```
+
 演算法分類如下：
 * 影像前處理演算法
 	* 端元選擇
