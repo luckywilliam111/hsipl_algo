@@ -49,16 +49,16 @@
 	* 影像分解
 		* RPCA-分解法
 			* RPCA-Kernel
-				* GA
-				* GM
-				* Godec
-				* GreGoDec
-				* OPRMF
-				* PCP
-				* PRMF
-				* SSGoDec
-				* SVT
-				* TGA
+				* GA-Kernel
+				* GM-Kernel
+				* Godec-Kernel
+				* GreGoDec-Kernel
+				* OPRMF-Kernel
+				* PCP-Kernel
+				* PRMF-Kernel
+				* SSGoDec-Kernel
+				* SVT-Kernel
+				* TGA-Kernel
 				
 * 背景抑制演算法
 	* 目標檢測演算法
@@ -111,14 +111,14 @@
 					* 分層抑制式-自適應匹配濾波器(hAMF)
 	* 異常檢測演算法
 		* 自相關矩陣
-			* R-RXD
-			* LPTD
+			* 自相關濾波器-Reed-Xiaoli檢測器(R-RXD)
+			* 低概率目標檢測器(LPTD)
 		* 共變異數矩陣
-			* K-RXD
-			* M-RXD
-			* N-RXD
-			* UTD
-			* UTD-RXD
+			* 共變異數-Reed-Xiaoli檢測器(K-RXD)
+			* 匹配自相關濾波器-Reed-Xiaoli檢測器(M-RXD)
+			* 正規化-RXD(N-RXD)
+			* 統一目標檢測器(UTD)
+			* 統一目標自相關濾波器-Reed-Xiaoli檢測器(UTD-RXD)
 
 
 
