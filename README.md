@@ -122,6 +122,28 @@
 			* 統一目標檢測器(UTD)
 			* 統一目標自相關濾波器-Reed-Xiaoli檢測器(UTD-RXD)
 
+'''
+import numpy as np
+import matplotlib.pyplot as plt
+import hsipl_algo.Target_Algorithm as hTA
 
+data = plt.imread('apple.jpg')
+
+plt.figure()
+plt.imshow(data)
+plt.show()
+
+data = np.double(data)
+
+x, y, z = data.shape
+
+d = data[70, 150, :].reshape(z, 1)
+
+result = hTA.CEM(data, d)
+
+plt.figure()
+plt.imshow(result, cmap='gray')
+plt.show()
+'''
 
 [WEN-Github](https://github.com/luckywilliam111/hsipl_algo.git)
