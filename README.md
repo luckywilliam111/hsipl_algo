@@ -147,6 +147,6 @@ plt.imshow(result, cmap='gray')
 plt.show()
 ```
 
-<img src="image/apple.jpg" alt="drawing" width="220" height="165">Apple Image</img><img src="image/Target_Detection.png" alt="drawing" width="220" height="165"><img src="image/Anomaly_Detection.png" alt="drawing" width="220" height="165">
+<img src="image/apple.jpg" alt="drawing" width="220" height="165" title="Apple Image"><img src="image/Target_Detection.png" alt="drawing" width="220" height="165"><img src="image/Anomaly_Detection.png" alt="drawing" width="220" height="165">
 
 [WEN-Github](https://github.com/luckywilliam111/hsipl_algo.git)
