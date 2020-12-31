@@ -122,7 +122,8 @@
 			* 統一目標檢測器(UTD)
 			* 統一目標自相關濾波器-Reed-Xiaoli檢測器(UTD-RXD)
 
-Target / Anomaly Detection Example Code
+# Target / Anomaly Detection Example Code
+---
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
@@ -155,5 +156,5 @@ plt.show()
 ```
 
 <img src="image/apple.jpg" alt="drawing" width="220" height="175" title="Apple Image"><img src="image/Target_Detection.png" alt="drawing" width="220" height="175"><img src="image/Anomaly_Detection.png" alt="drawing" width="220" height="175">
-
+---
 [WEN-Github](https://github.com/luckywilliam111/hsipl_algo.git)
