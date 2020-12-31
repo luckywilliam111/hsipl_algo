@@ -122,11 +122,12 @@
 			* 統一目標檢測器(UTD)
 			* 統一目標自相關濾波器-Reed-Xiaoli檢測器(UTD-RXD)
 
-
+Target / Anomaly Detection Example Code
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
 import hsipl_algo.Target_Algorithm as hTA
+import hsipl_algo.Anomaly_Algorithm as hAA
 
 data = plt.imread('apple.jpg')
 
@@ -141,6 +142,12 @@ x, y, z = data.shape
 d = data[70, 150, :].reshape(z, 1)
 
 result = hTA.CEM(data, d)
+
+plt.figure()
+plt.imshow(result, cmap='gray')
+plt.show()
+
+result = hAA.R_RXD(data)
 
 plt.figure()
 plt.imshow(result, cmap='gray')
