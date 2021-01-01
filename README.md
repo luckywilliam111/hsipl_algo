@@ -2,7 +2,7 @@
 
 <p style="text-align : center">這是一個由WEN所開發/整合而成的演算法套件，演算法主要適用於高光譜影像，包括影像前處理與背景抑制演算法，取得方式可以透過 cmd 輸入指令 pip install hsipl-algo 取得</p>
 
-![image](https://github.com/luckywilliam111/hsipl_algo/blob/master/image/install.png)
+![image](image/install.png)
 
 # 資料夾階層
 
@@ -25,8 +25,8 @@ hsipl-algo
 |       |---- Weighted_Target_Algorithm.py
 |
 |---- dist
-|  |---- hsipl_algo-1.0.17.tar
-|  |---- hsipl_algo-1.0.17-py3-none-any.whl
+|  |---- hsipl_algo-1.0.20.tar
+|  |---- hsipl_algo-1.0.20-py3-none-any.whl
 |
 |---- hsipl_algo
 |  |---- Anomaly_Algorithm.py
@@ -216,7 +216,7 @@ plt.imshow(S / 255)
 plt.show()
 ```
 
-<img src="https://github.com/luckywilliam111/hsipl_algo/blob/master/image/apple.jpg" alt="drawing" width="220" height="175" title="Apple Image"><img src="https://github.com/luckywilliam111/hsipl_algo/blob/master/image/Low_Rank_Matrix.png" alt="drawing" width="220" height="175" title="Low-Rank Matrix"><img src="https://github.com/luckywilliam111/hsipl_algo/blob/master/image/Sparse_Matrix.png" alt="drawing" width="220" height="175" title="Sparse-Matrix">
+<img src="image/apple.jpg" alt="drawing" width="220" height="175" title="Apple Image"><img src="image/Low_Rank_Matrix.png" alt="drawing" width="220" height="175" title="Low-Rank Matrix"><img src="image/Sparse_Matrix.png" alt="drawing" width="220" height="175" title="Sparse-Matrix">
 
 # Target / Anomaly Detection Example Code
 
@@ -251,6 +251,6 @@ plt.imshow(result, cmap='gray')
 plt.show()
 ```
 
-<img src="https://github.com/luckywilliam111/hsipl_algo/blob/master/image/apple.jpg" alt="drawing" width="220" height="175" title="Apple Image"><img src="https://github.com/luckywilliam111/hsipl_algo/blob/master/image/Target_Detection.png" alt="drawing" width="220" height="175" title="Target-Detection"><img src="https://github.com/luckywilliam111/hsipl_algo/blob/master/image/Anomaly_Detection.png" alt="drawing" width="220" height="175"  title="Anomaly-Detection">
+<img src="image/apple.jpg" alt="drawing" width="220" height="175" title="Apple Image"><img src="image/Target_Detection.png" alt="drawing" width="220" height="175" title="Target-Detection"><img src="image/Anomaly_Detection.png" alt="drawing" width="220" height="175"  title="Anomaly_Detection">
 
 [WEN-Github](https://github.com/luckywilliam111/hsipl_algo.git)

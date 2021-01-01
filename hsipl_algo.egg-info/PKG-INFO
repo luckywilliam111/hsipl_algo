@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: hsipl-algo
-Version: 1.0.18
+Version: 1.0.20
 Summary: For HyperSpectral Image's Algorithm package
 Home-page: https://github.com/luckywilliam111/hsipl_algo
 Author: WEN
@@ -259,7 +259,7 @@ Description: # Algorithm Package
         plt.show()
         ```
         
-        <img src="image/apple.jpg" alt="drawing" width="220" height="175" title="Apple Image"><img src="image/Target_Detection.png" alt="drawing" width="220" height="175" title="Target-Detection"><img src="image/Anomaly_Detection.png" alt="drawing" width="220" height="175"  title="Anomaly-Detection">
+        <img src="image/apple.jpg" alt="drawing" width="220" height="175" title="Apple Image"><img src="image/Target_Detection.png" alt="drawing" width="220" height="175" title="Target-Detection"><img src="image/Anomaly_Detection.png" alt="drawing" width="220" height="175"  title="Anomaly_Detection">
         
         [WEN-Github](https://github.com/luckywilliam111/hsipl_algo.git)
 Platform: UNKNOWN
