@@ -216,7 +216,7 @@ plt.imshow(S / 255)
 plt.show()
 ```
 
-<img src="image/apple.jpg" alt="drawing" width="230" height="175" title="Apple-Image"><img src="image/Low_Rank_Matrix.png" alt="drawing" width="220" height="175" title="Low-Rank Matrix"><img src="image/Sparse_Matrix.png" alt="drawing" width="220" height="175" title="Sparse-Matrix">
+<img src="image/apple.jpg" alt="drawing" width="260" height="175" title="Apple-Image"><img src="image/Low_Rank_Matrix.png" alt="drawing" width="220" height="175" title="Low-Rank Matrix"><img src="image/Sparse_Matrix.png" alt="drawing" width="220" height="175" title="Sparse-Matrix">
 
 # Find End-Member Example Code
 
@@ -310,6 +310,6 @@ plt.imshow(result, cmap='gray')
 plt.show()
 ```
 
-<img src="image/apple.jpg" alt="drawing" width="230" height="175" title="Apple-Image"><img src="image/Target_Detection.png" alt="drawing" width="220" height="175" title="Target-Detection"><img src="image/Anomaly_Detection.png" alt="drawing" width="220" height="175"  title="Anomaly_Detection">
+<img src="image/apple.jpg" alt="drawing" width="260" height="175" title="Apple-Image"><img src="image/Target_Detection.png" alt="drawing" width="220" height="175" title="Target-Detection"><img src="image/Anomaly_Detection.png" alt="drawing" width="220" height="175"  title="Anomaly_Detection">
 
 [WEN-Github](https://github.com/luckywilliam111/hsipl_algo.git)
