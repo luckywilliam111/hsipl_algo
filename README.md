@@ -216,7 +216,7 @@ plt.imshow(S / 255)
 plt.show()
 ```
 
-<img src="image/apple.jpg" alt="drawing" width="260" height="175" title="Apple-Image"><img src="image/Low_Rank_Matrix.png" alt="drawing" width="220" height="175" title="Low-Rank Matrix"><img src="image/Sparse_Matrix.png" alt="drawing" width="220" height="175" title="Sparse-Matrix">
+<img src="image/apple.jpg" alt="drawing" width="260" height="175" title="Apple-Image"><img src="image/GA_Low_Rank_Matrix.png" alt="drawing" width="220" height="175" title="GA-Low-Rank Matrix"><img src="image/GA_Sparse_Matrix.png" alt="drawing" width="220" height="175" title="GA-Sparse-Matrix">
 
 # Find End-Member Example Code
 
