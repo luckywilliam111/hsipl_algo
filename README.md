@@ -50,13 +50,13 @@ hsipl-algo
 |---- image
 |  |---- install.png
 |  |---- apple.jpg
-|  |---- Low_Rank_Matrix.png
-|  |---- Sparse_Matrix.png
+|  |---- GA_Low_Rank_Matrix.png
+|  |---- GA_Sparse_Matrix.png
 |  |---- Target_Detection.png
 |  |---- Anomaly_Detection.png
-|  |---- 
-|  |---- 
-|  |---- 
+|  |---- leather.jpg
+|  |---- PPI_EndMember.png
+|  |---- N_FINDR_EndMember.png
 |
 |---- .gitattributes
 |---- LICENSE
