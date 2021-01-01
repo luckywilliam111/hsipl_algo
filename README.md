@@ -216,7 +216,66 @@ plt.imshow(S / 255)
 plt.show()
 ```
 
-<img src="image/apple.jpg" alt="drawing" width="220" height="175" title="Apple Image"><img src="image/Low_Rank_Matrix.png" alt="drawing" width="220" height="175" title="Low-Rank Matrix"><img src="image/Sparse_Matrix.png" alt="drawing" width="220" height="175" title="Sparse-Matrix">
+<img src="image/apple.jpg" alt="drawing" width="220" height="175" title="Apple-Image"><img src="image/Low_Rank_Matrix.png" alt="drawing" width="220" height="175" title="Low-Rank Matrix"><img src="image/Sparse_Matrix.png" alt="drawing" width="220" height="175" title="Sparse-Matrix">
+
+# Find End-Member Example Code
+
+```python
+import numpy as np
+import scipy.io as sio
+import matplotlib.pyplot as plt
+import hsipl_algo.Find_EndMember as hFE
+
+data = sio.loadmat('A_6_mnf.mat')
+data = data['im_mnf']
+
+data = np.double(data)
+
+bs = sio.loadmat('A_6_CEM_SF_CTBS_band_select_result.mat')
+bs = (bs['SF_CTBS_band_select_result']).transpose()
+bs = bs.reshape(bs.shape[0])
+
+bs_data = data[:, :, bs]
+
+plt.figure()
+plt.imshow(data[:, :, 100], cmap='gray')
+plt.show()
+
+x, y, z = data.shape
+
+xx, yy, score, result = hFE.PPI(bs_data, 1500)
+
+score = score.reshape(x, y)
+
+coordinate = []
+
+plt.figure()
+plt.imshow(data[:, :, 100], cmap='gray')
+for i in range(5):
+    ppi_score = xx[0, -1-i]
+    x_y = np.argwhere(score == ppi_score)
+    
+    try:
+        for j in range(x_y.shape[0]):
+            coordinate.append([ppi_score, x_y[j, 0], x_y[j, 1]])
+            plt.plot(np.int(x_y[j, 1]), np.int(x_y[j, 0]), '.r')
+            plt.text(np.int(x_y[j, 1])-7, np.int(x_y[j, 0])-7, 'PPI Score= ' + str(np.int(ppi_score)), fontsize=10, color='blue', horizontalalignment='right', verticalalignment='bottom', bbox=dict(facecolor='green', alpha=0.3))
+    except Exception:
+        pass
+    
+plt.show()
+
+endmemberindex = hFE.N_FINDR(bs_data, 4)
+
+plt.figure()
+plt.imshow(data[:, :, 100], cmap='gray')
+for i in range(endmemberindex.shape[0]):
+    plt.plot(np.int(endmemberindex[i, 0]), np.int(endmemberindex[i, 1]), '.r')
+    plt.text(np.int(endmemberindex[i, 0])-7, np.int(endmemberindex[i, 1])-7, 'N-FINDR EndMember= ' + str(np.int(i+1)), fontsize=10, color='blue', horizontalalignment='right', verticalalignment='bottom', bbox=dict(facecolor='green', alpha=0.3))
+plt.show()
+```
+
+<img src="image/leather.jpg" alt="drawing" width="220" height="175" title="Leather-Image"><img src="image/PPI_EndMember.png" alt="drawing" width="220" height="175" title="PPI-EndMember"><img src="image/N_FINDR_EndMember.png" alt="drawing" width="220" height="175" title="N-FINDR-EndMember">
 
 # Target / Anomaly Detection Example Code
 
@@ -251,6 +310,6 @@ plt.imshow(result, cmap='gray')
 plt.show()
 ```
 
-<img src="image/apple.jpg" alt="drawing" width="220" height="175" title="Apple Image"><img src="image/Target_Detection.png" alt="drawing" width="220" height="175" title="Target-Detection"><img src="image/Anomaly_Detection.png" alt="drawing" width="220" height="175"  title="Anomaly_Detection">
+<img src="image/apple.jpg" alt="drawing" width="220" height="175" title="Apple-Image"><img src="image/Target_Detection.png" alt="drawing" width="220" height="175" title="Target-Detection"><img src="image/Anomaly_Detection.png" alt="drawing" width="220" height="175"  title="Anomaly_Detection">
 
 [WEN-Github](https://github.com/luckywilliam111/hsipl_algo.git)
