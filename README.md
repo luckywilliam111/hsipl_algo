@@ -275,7 +275,7 @@ for i in range(endmemberindex.shape[0]):
 plt.show()
 ```
 
-<img src="image/leather.jpg" alt="drawing" width="240" height="175" title="Leather-Image"><img src="image/PPI_EndMember.png" alt="drawing" width="220" height="175" title="PPI-EndMember"><img src="image/N_FINDR_EndMember.png" alt="drawing" width="220" height="175" title="N-FINDR-EndMember">
+<img src="image/leather.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/PPI_EndMember.png" alt="drawing" width="220" height="175" title="PPI-EndMember"><img src="image/N_FINDR_EndMember.png" alt="drawing" width="220" height="175" title="N-FINDR-EndMember">
 
 # Target / Anomaly Detection Example Code
 
