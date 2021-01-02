@@ -54,9 +54,13 @@ hsipl-algo
 |  |---- GA_Sparse_Matrix.png
 |  |---- Target_Detection.png
 |  |---- Anomaly_Detection.png
-|  |---- leather.jpg
+|  |---- Leather_Image.jpg
 |  |---- PPI_EndMember.png
 |  |---- N_FINDR_EndMember.png
+|  |---- Leather_ROI_Image.png
+|  |---- Leather_CEM_Band_Selection.png
+|  |---- Leather_Fusion_Band_Selelction_Target.png
+|  |---- Leather_Fusion_SF_CTBS_Band_Selelction.png
 |
 |---- .gitattributes
 |---- LICENSE
@@ -359,8 +363,8 @@ plt.legend()
 plt.show()
 ```
 <img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_ROI_Image.png" alt="drawing" width="220" height="175" title="Leather-ROI-Image">
-<img src="image/Leather_Fusion_Band_Selelction_Target.png" alt="drawing" width="220" height="175" title="Leather-Fusion-Band-Selelction-Target"><img src="image/Leather_Fusion_SF_CTBS_Band_Selelction.png" alt="drawing" width="220" height="175" title="Leather-Fusion-SF-CTBS-Band_Selelction">
 <img src="image/Leather_CEM_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CEM-Band-Selection"><img src="image/Leather_SF_CTBS_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-SF-CTBS-Band-Selection">
+<img src="image/Leather_Fusion_Band_Selelction_Target.png" alt="drawing" width="220" height="175" title="Leather-Fusion-Band-Selelction-Target"><img src="image/Leather_Fusion_SF_CTBS_Band_Selelction.png" alt="drawing" width="220" height="175" title="Leather-Fusion-SF-CTBS-Band_Selelction">
 
 # Target / Anomaly Detection Example Code
 
