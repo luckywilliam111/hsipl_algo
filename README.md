@@ -1,6 +1,6 @@
 # Algorithm Package
 
-<p style="text-align : center">這是一個由WEN所開發/整合而成的演算法套件，演算法主要適用於高光譜影像，包括影像前處理與背景抑制演算法，取得方式可以透過 cmd 輸入指令 pip install hsipl-algo== <Version> 以取得最新版本套件</p>
+<p style="text-align : center">這是一個由WEN所開發/整合而成的演算法套件，演算法主要適用於高光譜影像，包括影像前處理與背景抑制演算法，取得方式可以透過 cmd 輸入指令 pip install hsipl-algo== <<Version>> 以取得最新版本套件</p>
 
 ![image](image/install.png)
 
