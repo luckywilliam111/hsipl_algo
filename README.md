@@ -362,9 +362,9 @@ for i in range(bs_fusion_ctbs.shape[0]):
 plt.legend()
 plt.show()
 ```
-<img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_ROI_Image.png" alt="drawing" width="220" height="175" title="Leather-ROI-Image">
-<img src="image/Leather_CEM_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CEM-Band-Selection"><img src="image/Leather_SF_CTBS_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-SF-CTBS-Band-Selection">
-<img src="image/Leather_Fusion_Band_Selelction_Target.png" alt="drawing" width="220" height="175" title="Leather-Fusion-Band-Selelction-Target"><img src="image/Leather_Fusion_SF_CTBS_Band_Selelction.png" alt="drawing" width="220" height="175" title="Leather-Fusion-SF-CTBS-Band_Selelction">
+<img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"></img><img src="image/Leather_ROI_Image.png" alt="drawing" width="220" height="175" title="Leather-ROI-Image"></img>
+<img src="image/Leather_CEM_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CEM-Band-Selection"></img><img src="image/Leather_SF_CTBS_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-SF-CTBS-Band-Selection"></img>
+<img src="image/Leather_Fusion_Band_Selelction_Target.png" alt="drawing" width="220" height="175" title="Leather-Fusion-Band-Selelction-Target"></img><img src="image/Leather_Fusion_SF_CTBS_Band_Selelction.png" alt="drawing" width="220" height="175" title="Leather-Fusion-SF-CTBS-Band_Selelction"></img>
 
 # Target / Anomaly Detection Example Code
 
