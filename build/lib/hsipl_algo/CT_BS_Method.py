@@ -12,7 +12,7 @@ def BS_MaxV_BP(imagecube, d, num):
     X = []
     for i in range(d.shape[1]):
         dd = d[:, i].reshape((d.shape[0], 1), order='F')
-        maxV_BP_band_select, maxV_BP_runtime = MaxV_BP(imagecube, dd, num)
+        maxV_BP_band_select = MaxV_BP(imagecube, dd, num)
         maxV_BP_band_select = maxV_BP_band_select.reshape((maxV_BP_band_select.shape[0]), order='F')
         X.append(maxV_BP_band_select)
       
@@ -27,7 +27,7 @@ def BS_MinV_BP(imagecube, d, num):
     X = []
     for i in range(d.shape[1]):
         dd = d[:, i].reshape((d.shape[0], 1), order='F')
-        minV_BP_band_select, minV_BP_runtime = MinV_BP(imagecube, dd, num)
+        minV_BP_band_select = MinV_BP(imagecube, dd, num)
         minV_BP_band_select = minV_BP_band_select.reshape((minV_BP_band_select.shape[0]), order='F')
         X.append(minV_BP_band_select)
       
@@ -42,7 +42,7 @@ def BS_SB_CTBS(imagecube, d, num):
     X = []
     for i in range(d.shape[1]):
         dd = d[:, i].reshape((d.shape[0], 1), order='F')
-        SB_CTBS_band_select, SB_CTBS_runtime = SB_CTBS(imagecube, dd, num)
+        SB_CTBS_band_select = SB_CTBS(imagecube, dd, num)
         SB_CTBS_band_select = SB_CTBS_band_select.reshape((SB_CTBS_band_select.shape[0]), order='F')
         X.append(SB_CTBS_band_select)
       
@@ -57,7 +57,7 @@ def BS_SF_CTBS(imagecube, d, num):
     X = []
     for i in range(d.shape[1]):
         dd = d[:, i].reshape((d.shape[0], 1), order='F')
-        SF_CTBS_band_select, SF_CTBS_runtime = SF_CTBS(imagecube, dd, num)
+        SF_CTBS_band_select = SF_CTBS(imagecube, dd, num)
         SF_CTBS_band_select = SF_CTBS_band_select.reshape((SF_CTBS_band_select.shape[0]), order='F')
         X.append(SF_CTBS_band_select)
       
@@ -122,7 +122,7 @@ def SB_CTBS(imagecube, d, num):
     xx, yy, band_num = imagecube.shape
     test_image = imagecube.reshape((xx * yy, band_num), order='F')
     
-    max_band_select, non = MaxV_BP(imagecube, d, num)
+    max_band_select = MaxV_BP(imagecube, d, num)
     
     omega = []
     omega.append(np.int(max_band_select[0]))
@@ -157,7 +157,7 @@ def SF_CTBS(imagecube, d, num):
     xx, yy, band_num = imagecube.shape
     test_image = imagecube.reshape((xx * yy, band_num), order='F')
     
-    min_band_select, non = MinV_BP(imagecube, d, num)
+    min_band_select = MinV_BP(imagecube, d, num)
     
     omega = []
     omega.append(np.int(min_band_select[0]))
