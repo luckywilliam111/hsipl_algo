@@ -298,15 +298,15 @@ plt.figure()
 plt.imshow(data[:, :, 100], cmap='gray')
 plt.show()
 
-data = data[213:263, 170:212, :]
+data_roi = data[213:263, 170:212, :]
 
 x, y, z = data.shape
 
 plt.figure()
-plt.imshow(data[:, :, 100], cmap='gray')
+plt.imshow(data_roi[:, :, 100], cmap='gray')
 plt.show()
 
-bs_cem = hCM.CEM_BDM(data[:, :, 30:200], 5)
+bs_cem = hCM.CEM_BDM(data_roi[:, :, 30:200], 5)
 bs_cem = bs_cem + 30
 
 plt.figure()
@@ -316,7 +316,8 @@ for i in range(bs_cem.shape[0]):
 plt.legend()
 plt.show()
 
-bs_ctbs = hCBM.SF_CTBS(data, d, 5)
+bs_ctbs = hCBM.SF_CTBS(data[:, :, 30:200], d[30:200], 5)
+bs_ctbs = bs_ctbs + 30
 
 plt.figure()
 plt.plot(d, 'b', label='d')
