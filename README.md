@@ -275,7 +275,58 @@ for i in range(endmemberindex.shape[0]):
 plt.show()
 ```
 
-<img src="image/leather.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/PPI_EndMember.png" alt="drawing" width="220" height="175" title="PPI-EndMember"><img src="image/N_FINDR_EndMember.png" alt="drawing" width="220" height="175" title="N-FINDR-EndMember">
+<img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/PPI_EndMember.png" alt="drawing" width="220" height="175" title="PPI-EndMember"><img src="image/N_FINDR_EndMember.png" alt="drawing" width="220" height="175" title="N-FINDR-EndMember">
+
+# CEM / CTBS Band-Selection Example Code
+
+```python
+import numpy as np
+import scipy.io as sio
+import matplotlib.pyplot as plt
+import hsipl_algo.CEM_BS_Method as hCM
+import hsipl_algo.CT_BS_Method as hCBM
+
+data = sio.loadmat('A_6_mnf.mat')
+data = data['im_mnf']
+
+d = sio.loadmat('A_6_d.mat')
+d = d['d']
+
+data = np.double(data)
+
+plt.figure()
+plt.imshow(data[:, :, 100], cmap='gray')
+plt.show()
+
+data = data[213:263, 170:212, :]
+
+x, y, z = data.shape
+
+plt.figure()
+plt.imshow(data[:, :, 100], cmap='gray')
+plt.show()
+
+bs_cem = hCM.CEM_BDM(data[:, :, 30:200], 5)
+bs_cem = bs_cem + 30
+
+plt.figure()
+plt.plot(d, 'b', label='d')
+for i in range(bs_cem.shape[0]):
+    plt.axvline(x = bs_cem[i], color='y', linestyle='--')
+plt.legend()
+plt.show()
+
+bs_ctbs = hCBM.SF_CTBS(data, d, 5)
+
+plt.figure()
+plt.plot(d, 'b', label='d')
+for i in range(bs_ctbs.shape[0]):
+    plt.axvline(x = bs_ctbs[i], color='y', linestyle='--')
+plt.legend()
+plt.show()
+```
+<img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_ROI_Image.png" alt="drawing" width="220" height="175" title="Leather-ROI-Image">
+<img src="image/Leather_CEM_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CEM-Band-Selection"><img src="image/Leather_SF_CTBS_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-SF-CTBS_Band-Selection">
 
 # Target / Anomaly Detection Example Code
 
