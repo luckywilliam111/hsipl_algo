@@ -277,7 +277,7 @@ plt.show()
 
 <img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/PPI_EndMember.png" alt="drawing" width="220" height="175" title="PPI-EndMember"><img src="image/N_FINDR_EndMember.png" alt="drawing" width="220" height="175" title="N-FINDR-EndMember">
 
-# CEM / CTBS Band-Selection Example Code
+# CEM / CTBS / Fusion-CTBS Band-Selection Example Code
 
 ```python
 import numpy as np
@@ -292,15 +292,18 @@ data = data['im_mnf']
 d = sio.loadmat('A_6_d.mat')
 d = d['d']
 
+coordinate = sio.loadmat('A_6_coordinate.mat')
+coordinate = coordinate['coordinate']
+
 data = np.double(data)
+
+x, y, z = data.shape
 
 plt.figure()
 plt.imshow(data[:, :, 100], cmap='gray')
 plt.show()
 
 data_roi = data[213:263, 170:212, :]
-
-x, y, z = data.shape
 
 plt.figure()
 plt.imshow(data_roi[:, :, 100], cmap='gray')
@@ -325,8 +328,38 @@ for i in range(bs_ctbs.shape[0]):
     plt.axvline(x = bs_ctbs[i], color='y', linestyle='--')
 plt.legend()
 plt.show()
+
+d1 = data[coordinate[0, 1], coordinate[0, 0], :].reshape(z, 1)
+d2 = data[coordinate[1, 1], coordinate[1, 0], :].reshape(z, 1)
+d3 = data[coordinate[2, 1], coordinate[2, 0], :].reshape(z, 1)
+
+plt.figure()
+plt.imshow(data[:, :, 100], cmap='gray')
+plt.plot(coordinate[0, 0], coordinate[0, 1], '.r')
+plt.text(coordinate[0, 0]-7, coordinate[0, 1]-7, 'd1', fontsize=10, color='blue', horizontalalignment='right', verticalalignment='bottom', bbox=dict(facecolor='green', alpha=0.3))
+plt.plot(coordinate[1, 0], coordinate[1, 1], '.g')
+plt.text(coordinate[1, 0]-7, coordinate[1, 1]-7, 'd2', fontsize=10, color='blue', horizontalalignment='right', verticalalignment='bottom', bbox=dict(facecolor='green', alpha=0.3))
+plt.plot(coordinate[2, 0], coordinate[2, 1], '.b')
+plt.text(coordinate[2, 0]-7, coordinate[2, 1]-7, 'd3', fontsize=10, color='blue', horizontalalignment='right', verticalalignment='bottom', bbox=dict(facecolor='green', alpha=0.3))
+plt.show()
+
+d = np.hstack([d1, d2, d3])
+
+bs_fusion_ctbs = hCBM.BS_SF_CTBS(data[:, :, 30:200], d[30:200, :], 5)
+bs_fusion_ctbs = bs_fusion_ctbs + 30
+
+color = ['red', 'green', 'blue']
+
+plt.figure()
+for i in range(bs_fusion_ctbs.shape[0]):
+    if i < d.shape[1]:
+        plt.plot(d[:, i], color=color[i], label='d' + str(i+1))
+    plt.axvline(x = bs_fusion_ctbs[i], color='y', linestyle='--')
+plt.legend()
+plt.show()
 ```
 <img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_ROI_Image.png" alt="drawing" width="220" height="175" title="Leather-ROI-Image">
+<img src="image/Leather_Fusion_Band_Selelction_Target.png" alt="drawing" width="220" height="175" title="Leather-Fusion-Band-Selelction-Target"><img src="image/Leather_Fusion_SF_CTBS_Band_Selelction.png" alt="drawing" width="220" height="175" title="Leather-Fusion-SF-CTBS-Band_Selelction">
 <img src="image/Leather_CEM_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CEM-Band-Selection"><img src="image/Leather_SF_CTBS_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-SF-CTBS-Band-Selection">
 
 # Target / Anomaly Detection Example Code
