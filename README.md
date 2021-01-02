@@ -327,7 +327,7 @@ plt.legend()
 plt.show()
 ```
 <img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_ROI_Image.png" alt="drawing" width="220" height="175" title="Leather-ROI-Image">
-<img src="image/Leather_CEM_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CEM-Band-Selection"><img src="image/Leather_SF_CTBS_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-SF-CTBS_Band-Selection">
+<img src="image/Leather_CEM_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CEM-Band-Selection"><img src="image/Leather_SF_CTBS_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-SF-CTBS-Band-Selection">
 
 # Target / Anomaly Detection Example Code
 
