@@ -373,7 +373,7 @@ plt.show()
 import scipy.io as sio
 import matplotlib.pyplot as plt
 from keras import backend as K
-import  hsipl_algo.CNN_BS_Method as hCNNBM
+import hsipl_algo.CNN_BS_Method as hCNNBM
 
 #================================ Load Data ===================================
 
