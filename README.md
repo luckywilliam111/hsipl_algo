@@ -518,6 +518,10 @@ plt.show()
 #==============================================================================
 ```
 
+VGG-Type CNN Model
+
+
+
 # Target / Anomaly Detection Example Code
 
 ```python
