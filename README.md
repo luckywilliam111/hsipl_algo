@@ -80,9 +80,9 @@ hsipl-algo
 		* NWHFC
 	* 波段選擇
 		* 基於CEM-波段選擇
-			* CEM-BCC
-			* CEM-BCM
-			* CEM-BDM
+			* 最小能量限制法之波段關聯限制(CEM-BCC)
+			* 最小能量限制法之波段關聯(CEM-BCM)
+			* 最小能量限制法之波段依賴最小化(CEM-BDM)
 		* 基於相關係數-波段選擇
 			* 相關係數-波段選擇(BS-Corrcoef)
 		* 基於熵-波段選擇
