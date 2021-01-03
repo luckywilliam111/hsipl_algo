@@ -520,7 +520,7 @@ plt.show()
 
 VGG-Type CNN Model
 
-
+<img src="image/VGG_Type_Model.png" alt="drawing" width="200" height="450" title="VGG-Type-Model">
 
 # Target / Anomaly Detection Example Code
 
