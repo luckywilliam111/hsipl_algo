@@ -186,7 +186,7 @@ Description: # Algorithm Package
         	* 異常檢測演算法
         		* 自相關矩陣
         			* 自相關濾波器-Reed-Xiaoli檢測器(R-RXD)
-        			* 滑動視窗-最eed-Xiaoli檢測器((SW-RXD)
+        			* 滑動視窗-Reed-Xiaoli檢測器((SW-RXD)
         			* 低概率目標檢測器(LPTD)
         		* 共變異數矩陣
         			* 共變異數-Reed-Xiaoli檢測器(K-RXD)
@@ -374,6 +374,133 @@ Description: # Algorithm Package
         <img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_ROI_Image.png" alt="drawing" width="220" height="175" title="Leather-ROI-Image">
         <img src="image/Leather_CEM_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CEM-Band-Selection"><img src="image/Leather_SF_CTBS_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-SF-CTBS-Band-Selection">
         <img src="image/Leather_Fusion_Band_Selelction_Target.png" alt="drawing" width="220" height="175" title="Leather-Fusion-Band-Selelction-Target"><img src="image/Leather_Fusion_SF_CTBS_Band_Selelction.png" alt="drawing" width="220" height="175" title="Leather-Fusion-SF-CTBS-Band_Selelction">
+        
+        # CNN Feature Entropy / Variance Band-Selection Example Code
+        
+        ```python
+        import scipy.io as sio
+        import matplotlib.pyplot as plt
+        from keras import backend as K
+        import hsipl_algo.CNN_BS_Method as hCNNBM
+        
+        #================================ Load Data ===================================
+        
+        path = 'algo_test/data1/'
+        
+        data = sio.loadmat(path + 'A_6_mnf.mat')
+        data = data['im_mnf']
+        
+        d = sio.loadmat(path + 'A_6_d.mat')
+        d = d['d']
+        
+        HIM = data[:, :, 30:200]
+        
+        x, y, z = HIM.shape
+        
+        re_HIM = HIM.reshape(z, x, y, 1)
+        
+        num_band = 5
+        
+        #==============================================================================
+        
+        #======================= Create VGG-Type Convolution Model ====================
+        
+        filters=[16, 16, 8, 8]
+        kernel = [3, 3, 3, 3]
+        input_shape = (re_HIM.shape[1], re_HIM.shape[2], re_HIM.shape[3])
+        pad = ['same', 'same', 'same', 'same']
+        activation = ['relu', 'relu', 'relu', 'relu']
+        maxpool = [2, 2]
+        
+        model_vgg = hCNNBM.cnn_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool, model_type='vgg')
+        
+        #==============================================================================
+        
+        #====================== Get VGG-Type Feature Map Get Band =====================
+        
+        band_select_entropy_vgg = hCNNBM.CNN_Entropy_Band_Selection(HIM, model_vgg, num_band)
+        band_select_entropy_vgg = band_select_entropy_vgg + 30
+        
+        band_select_variance_vgg = hCNNBM.CNN_Variance_Band_Selection(HIM, model_vgg, num_band)
+        band_select_variance_vgg = band_select_variance_vgg + 30
+        
+        #==============================================================================
+        
+        #============================== Clear Keras Model =============================
+        
+        K.clear_session()
+        
+        #==============================================================================
+        
+        print('\n\n')
+        
+        #====================== Create Self-Type Convolution Model ====================
+        
+        filters=[16, 8]
+        kernel = [3, 3]
+        input_shape = (re_HIM.shape[1], re_HIM.shape[2], re_HIM.shape[3])
+        pad = ['same', 'same']
+        activation = ['relu', 'relu']
+        maxpool = [2, 2]
+        
+        model_self = hCNNBM.cnn_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool, model_type='self')
+        
+        #==============================================================================
+        
+        #===================== Get Self-Type Feature Map Get Band =====================
+        
+        band_select_entropy_self = hCNNBM.CNN_Entropy_Band_Selection(HIM, model_self, num_band)
+        band_select_entropy_self = band_select_entropy_self + 30
+        
+        band_select_variance_self = hCNNBM.CNN_Variance_Band_Selection(HIM, model_self, num_band)
+        band_select_variance_self = band_select_variance_self + 30
+        
+        #==============================================================================
+        
+        #================================= Plot Band ==================================
+        
+        plt.figure()
+        plt.plot(d, 'r')
+        for i in range(num_band):
+            plt.axvline(x=band_select_entropy_vgg[i], color='yellow')
+            
+        plt.show()
+        
+        plt.figure()
+        plt.plot(d, 'r')
+        for i in range(num_band):
+            plt.axvline(x=band_select_variance_vgg[i], color='yellow')
+            
+        plt.show()
+        
+        plt.figure()
+        plt.plot(d, 'r')
+        for i in range(num_band):
+            plt.axvline(x=band_select_entropy_self[i], color='yellow')
+            
+        plt.show()
+        
+        plt.figure()
+        plt.plot(d, 'r')
+        for i in range(num_band):
+            plt.axvline(x=band_select_variance_self[i], color='yellow')
+            
+        plt.show()
+        
+        #==============================================================================
+        ```
+        
+        VGG-Type CNN Model
+        
+        <img src="image/VGG_Type_Model.png" alt="drawing" width="580" height="550" title="VGG-Type-Model">
+        
+        <img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_CNN_VGG_Entropy_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-VGG-Entropy-Band_Selection"><img src="image/Leather_CNN_VGG_Variance_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-VGG-Variance-Band-Selection">
+        
+        Self-Type CNN Model
+        
+        <img src="image/Self_Type_Model.png" alt="drawing" width="580" height="450" title="VGG-Type-Model">
+        
+        <img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_CNN_Self_Entropy_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Self-Entropy-Band_Selection"><img src="image/Leather_CNN_Self_Variance_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Self-Variance-Band-Selection">
         
         # Target / Anomaly Detection Example Code
         

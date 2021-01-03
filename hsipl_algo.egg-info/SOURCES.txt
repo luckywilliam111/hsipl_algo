@@ -2,6 +2,7 @@ README.md
 setup.py
 hsipl_algo/Anomaly_Algorithm.py
 hsipl_algo/CEM_BS_Method.py
+hsipl_algo/CNN_BS_Method.py
 hsipl_algo/CT_BS_Method.py
 hsipl_algo/Calc_Band.py
 hsipl_algo/Find_EndMember.py
