@@ -374,6 +374,7 @@ import numpy as np
 import scipy.io as sio
 from scipy.stats import entropy
 import matplotlib.pyplot as plt
+from keras import backend as K
 from keras.models import Sequential
 from keras.layers import Activation, Flatten, Conv2D, MaxPooling2D, BatchNormalization
 
@@ -472,30 +473,59 @@ x, y, z = HIM.shape
 
 re_HIM = HIM.reshape(z, x, y, 1)
 
-#==============================================================================
-
-#=========================== Create Convolution Model =========================
-
-filters=[32, 32, 16, 16, 8, 8]
-kernel = [3, 3, 3, 3, 3, 3]
-input_shape = (re_HIM.shape[1], re_HIM.shape[2], re_HIM.shape[3])
-pad = ['same', 'same', 'same', 'same', 'same', 'same']
-activation = ['relu', 'relu', 'relu', 'relu', 'relu', 'relu']
-maxpool = [2, 2, 2]
-
-model = CNN_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool)
-
-#==============================================================================
-
-#========================== Get Feature Map Get Band ==========================
-
 num_band = 5
 
-band_select_entropy = CNN_Entropy_Band_Selection(HIM, model, num_band)
-band_select_entropy = band_select_entropy + 30
+#==============================================================================
 
-band_select_variance = CNN_Variance_Band_Selection(HIM, model, num_band)
-band_select_variance = band_select_variance + 30
+#======================= Create VGG-Type Convolution Model ====================
+
+filters=[16, 16, 8, 8]
+kernel = [3, 3, 3, 3]
+input_shape = (re_HIM.shape[1], re_HIM.shape[2], re_HIM.shape[3])
+pad = ['same', 'same', 'same', 'same']
+activation = ['relu', 'relu', 'relu', 'relu']
+maxpool = [2, 2]
+
+model_vgg = CNN_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool, model_type='vgg')
+
+#====================== Get VGG-Type Feature Map Get Band =====================
+
+band_select_entropy_vgg = CNN_Entropy_Band_Selection(HIM, model_vgg, num_band)
+band_select_entropy_vgg = band_select_entropy_vgg + 30
+
+band_select_variance_vgg = CNN_Variance_Band_Selection(HIM, model_vgg, num_band)
+band_select_variance_vgg = band_select_variance_vgg + 30
+
+#==============================================================================
+
+#============================== Clear Keras Model =============================
+
+K.clear_session()
+
+#==============================================================================
+
+print('\n\n')
+
+#====================== Create Self-Type Convolution Model ====================
+
+filters=[16, 8]
+kernel = [3, 3]
+input_shape = (re_HIM.shape[1], re_HIM.shape[2], re_HIM.shape[3])
+pad = ['same', 'same']
+activation = ['relu', 'relu']
+maxpool = [2, 2]
+
+model_self = CNN_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool, model_type='self')
+
+#==============================================================================
+
+#===================== Get Self-Type Feature Map Get Band =====================
+
+band_select_entropy_self = CNN_Entropy_Band_Selection(HIM, model_self, num_band)
+band_select_entropy_self = band_select_entropy_self + 30
+
+band_select_variance_self = CNN_Variance_Band_Selection(HIM, model_self, num_band)
+band_select_variance_self = band_select_variance_self + 30
 
 #==============================================================================
 
@@ -504,14 +534,28 @@ band_select_variance = band_select_variance + 30
 plt.figure()
 plt.plot(d, 'r')
 for i in range(num_band):
-    plt.axvline(x=band_select_entropy[i], color='yellow')
+    plt.axvline(x=band_select_entropy_vgg[i], color='yellow')
     
 plt.show()
 
 plt.figure()
 plt.plot(d, 'r')
 for i in range(num_band):
-    plt.axvline(x=band_select_variance[i], color='yellow')
+    plt.axvline(x=band_select_variance_vgg[i], color='yellow')
+    
+plt.show()
+
+plt.figure()
+plt.plot(d, 'r')
+for i in range(num_band):
+    plt.axvline(x=band_select_entropy_self[i], color='yellow')
+    
+plt.show()
+
+plt.figure()
+plt.plot(d, 'r')
+for i in range(num_band):
+    plt.axvline(x=band_select_variance_self[i], color='yellow')
     
 plt.show()
 
@@ -522,11 +566,11 @@ VGG-Type CNN Model
 
 <img src="image/VGG_Type_Model.png" alt="drawing" width="580" height="550" title="VGG-Type-Model">
 
-<img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_CNN_Entropy_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Entropy-Band_Selection"><img src="image/Leather_CNN_Variance_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Variance-Band-Selection">
+<img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_CNN_VGG_Entropy_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-VGG-Entropy-Band_Selection"><img src="image/Leather_CNN_VGG_Variance_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-VGG-Variance-Band-Selection">
 
 Self-Type CNN Model
 
-<img src="image/Self_Type_Model.png" alt="drawing" width="580" height="300" title="VGG-Type-Model">
+<img src="image/Self_Type_Model.png" alt="drawing" width="580" height="450" title="VGG-Type-Model"><img src="image/Leather_CNN_Self_Entropy_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Self-Entropy-Band_Selection"><img src="image/Leather_CNN_Self_Variance_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Self-Variance-Band-Selection">
 
 # Target / Anomaly Detection Example Code
 
