@@ -522,6 +522,8 @@ VGG-Type CNN Model
 
 <img src="image/VGG_Type_Model.png" alt="drawing" width="580" height="550" title="VGG-Type-Model">
 
+<img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_CNN_Entropy_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Entropy-Band_Selection"><img src="image/Leather_CNN_Variance_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Variance-Band-Selection">
+
 # Target / Anomaly Detection Example Code
 
 ```python
