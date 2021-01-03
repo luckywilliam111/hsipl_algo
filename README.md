@@ -488,6 +488,8 @@ maxpool = [2, 2]
 
 model_vgg = CNN_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool, model_type='vgg')
 
+#==============================================================================
+
 #====================== Get VGG-Type Feature Map Get Band =====================
 
 band_select_entropy_vgg = CNN_Entropy_Band_Selection(HIM, model_vgg, num_band)
