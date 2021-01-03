@@ -367,6 +367,157 @@ plt.show()
 <img src="image/Leather_CEM_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CEM-Band-Selection"><img src="image/Leather_SF_CTBS_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-SF-CTBS-Band-Selection">
 <img src="image/Leather_Fusion_Band_Selelction_Target.png" alt="drawing" width="220" height="175" title="Leather-Fusion-Band-Selelction-Target"><img src="image/Leather_Fusion_SF_CTBS_Band_Selelction.png" alt="drawing" width="220" height="175" title="Leather-Fusion-SF-CTBS-Band_Selelction">
 
+# CNN Feature Entropy / Variance Band-Selection Example Code
+
+```python
+import numpy as np
+import scipy.io as sio
+from scipy.stats import entropy
+import matplotlib.pyplot as plt
+from keras.models import Sequential
+from keras.layers import Activation, Flatten, Conv2D, MaxPooling2D, BatchNormalization
+
+def CNN_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool, model_type='vgg', active=True, BNormalize=True, MaxPool=True, summary=True):
+    model = Sequential()
+    
+    if model_type == 'vgg':
+        for i in range(len(filters)):
+            if i == 0:
+                model.add(Conv2D(filters[i], (kernel[i], kernel[i]), padding=pad[i], input_shape=input_shape))
+            elif i > 0:
+                model.add(Conv2D(filters[i], (kernel[i], kernel[i]), padding=pad[i]))
+                
+            if active == True:
+                model.add(Activation(activation[i]))
+                
+            if BNormalize == True:
+                model.add(BatchNormalization())
+                
+            if MaxPool == True and i > 0 and (i%2 == 1):
+                model.add(MaxPooling2D(pool_size=(maxpool[np.int(i/2)], maxpool[np.int(i/2)])))
+                
+    elif model_type == 'self':
+        if len(filters) and len(kernel) and len(activation):
+            for i in range(len(filters)):
+                if i == 0:
+                    model.add(Conv2D(filters[i], (kernel[i], kernel[i]), padding=pad[i], input_shape=input_shape))
+                elif i > 0:
+                    model.add(Conv2D(filters[i], (kernel[i], kernel[i]), padding=pad[i]))
+                
+                if active == True:
+                    model.add(Activation(activation[i]))
+                    
+                if BNormalize == True:
+                    model.add(BatchNormalization())
+                    
+                if MaxPool == True:
+                    model.add(MaxPooling2D(pool_size=(maxpool[i], maxpool[i])))
+                    
+    model.add(Flatten())
+    
+    if summary == True:
+        model.summary()
+        
+    return model
+
+def CNN_Entropy_Band_Selection(HIM, model, num):
+    x, y, z = HIM.shape
+
+    X = HIM.reshape(z, x, y, 1)
+    
+    feature_maps = model.predict(X)
+    
+    band_entropy = np.zeros([z])
+    
+    for i in range(z):
+        band_entropy[i] = entropy(feature_maps[i, :])
+        
+    band_select_entropy = np.argsort(band_entropy * -1)
+    
+    band_select_entropy = band_select_entropy[:num]
+    
+    return band_select_entropy
+
+def CNN_Variance_Band_Selection(HIM, model, num):
+    x, y, z = HIM.shape
+
+    X = HIM.reshape(z, x, y, 1)
+    
+    feature_maps = model.predict(X)
+    
+    band_variance = np.zeros([z])
+    
+    for i in range(z):
+        band_variance[i] = np.var(feature_maps[i, :])
+        
+    band_select_variance = np.argsort(band_variance * -1)
+    
+    band_select_variance = band_select_variance[:num]
+    
+    return band_select_variance
+
+#================================ Load Data ===================================
+
+path = 'data1/'
+
+data = sio.loadmat(path + 'A_6_mnf.mat')
+data = data['im_mnf']
+
+d = sio.loadmat(path + 'A_6_d.mat')
+d = d['d']
+
+HIM = data[:, :, 30:200]
+
+x, y, z = HIM.shape
+
+re_HIM = HIM.reshape(z, x, y, 1)
+
+#==============================================================================
+
+#=========================== Create Convolution Model =========================
+
+filters=[32, 32, 16, 16, 8, 8]
+kernel = [3, 3, 3, 3, 3, 3]
+input_shape = (re_HIM.shape[1], re_HIM.shape[2], re_HIM.shape[3])
+pad = ['same', 'same', 'same', 'same', 'same', 'same']
+activation = ['relu', 'relu', 'relu', 'relu', 'relu', 'relu']
+maxpool = [2, 2, 2]
+
+model = CNN_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool)
+
+#==============================================================================
+
+#========================== Get Feature Map Get Band ==========================
+
+num_band = 5
+
+band_select_entropy = CNN_Entropy_Band_Selection(HIM, model, num_band)
+band_select_entropy = band_select_entropy + 30
+
+band_select_variance = CNN_Variance_Band_Selection(HIM, model, num_band)
+band_select_variance = band_select_variance + 30
+
+#==============================================================================
+
+#================================= Plot Band ==================================
+
+plt.figure()
+plt.plot(d, 'r')
+for i in range(num_band):
+    plt.axvline(x=band_select_entropy[i], color='yellow')
+    
+plt.show()
+
+plt.figure()
+plt.plot(d, 'r')
+for i in range(num_band):
+    plt.axvline(x=band_select_variance[i], color='yellow')
+    
+plt.show()
+
+#==============================================================================
+```
+
 # Target / Anomaly Detection Example Code
 
 ```python
