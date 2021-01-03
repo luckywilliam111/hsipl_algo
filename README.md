@@ -370,96 +370,14 @@ plt.show()
 # CNN Feature Entropy / Variance Band-Selection Example Code
 
 ```python
-import numpy as np
 import scipy.io as sio
-from scipy.stats import entropy
 import matplotlib.pyplot as plt
 from keras import backend as K
-from keras.models import Sequential
-from keras.layers import Activation, Flatten, Conv2D, MaxPooling2D, BatchNormalization
-
-def CNN_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool, model_type='vgg', active=True, BNormalize=True, MaxPool=True, summary=True):
-    model = Sequential()
-    
-    if model_type == 'vgg':
-        for i in range(len(filters)):
-            if i == 0:
-                model.add(Conv2D(filters[i], (kernel[i], kernel[i]), padding=pad[i], input_shape=input_shape))
-            elif i > 0:
-                model.add(Conv2D(filters[i], (kernel[i], kernel[i]), padding=pad[i]))
-                
-            if active == True:
-                model.add(Activation(activation[i]))
-                
-            if BNormalize == True:
-                model.add(BatchNormalization())
-                
-            if MaxPool == True and i > 0 and (i%2 == 1):
-                model.add(MaxPooling2D(pool_size=(maxpool[np.int(i/2)], maxpool[np.int(i/2)])))
-                
-    elif model_type == 'self':
-        if len(filters) and len(kernel) and len(activation):
-            for i in range(len(filters)):
-                if i == 0:
-                    model.add(Conv2D(filters[i], (kernel[i], kernel[i]), padding=pad[i], input_shape=input_shape))
-                elif i > 0:
-                    model.add(Conv2D(filters[i], (kernel[i], kernel[i]), padding=pad[i]))
-                
-                if active == True:
-                    model.add(Activation(activation[i]))
-                    
-                if BNormalize == True:
-                    model.add(BatchNormalization())
-                    
-                if MaxPool == True:
-                    model.add(MaxPooling2D(pool_size=(maxpool[i], maxpool[i])))
-                    
-    model.add(Flatten())
-    
-    if summary == True:
-        model.summary()
-        
-    return model
-
-def CNN_Entropy_Band_Selection(HIM, model, num):
-    x, y, z = HIM.shape
-
-    X = HIM.reshape(z, x, y, 1)
-    
-    feature_maps = model.predict(X)
-    
-    band_entropy = np.zeros([z])
-    
-    for i in range(z):
-        band_entropy[i] = entropy(feature_maps[i, :])
-        
-    band_select_entropy = np.argsort(band_entropy * -1)
-    
-    band_select_entropy = band_select_entropy[:num]
-    
-    return band_select_entropy
-
-def CNN_Variance_Band_Selection(HIM, model, num):
-    x, y, z = HIM.shape
-
-    X = HIM.reshape(z, x, y, 1)
-    
-    feature_maps = model.predict(X)
-    
-    band_variance = np.zeros([z])
-    
-    for i in range(z):
-        band_variance[i] = np.var(feature_maps[i, :])
-        
-    band_select_variance = np.argsort(band_variance * -1)
-    
-    band_select_variance = band_select_variance[:num]
-    
-    return band_select_variance
+import  hsipl_algo.CNN_BS_Method as hCNNBM
 
 #================================ Load Data ===================================
 
-path = 'data1/'
+path = 'algo_test/data1/'
 
 data = sio.loadmat(path + 'A_6_mnf.mat')
 data = data['im_mnf']
@@ -486,16 +404,16 @@ pad = ['same', 'same', 'same', 'same']
 activation = ['relu', 'relu', 'relu', 'relu']
 maxpool = [2, 2]
 
-model_vgg = CNN_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool, model_type='vgg')
+model_vgg = hCNNBM.cnn_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool, model_type='vgg')
 
 #==============================================================================
 
 #====================== Get VGG-Type Feature Map Get Band =====================
 
-band_select_entropy_vgg = CNN_Entropy_Band_Selection(HIM, model_vgg, num_band)
+band_select_entropy_vgg = hCNNBM.CNN_Entropy_Band_Selection(HIM, model_vgg, num_band)
 band_select_entropy_vgg = band_select_entropy_vgg + 30
 
-band_select_variance_vgg = CNN_Variance_Band_Selection(HIM, model_vgg, num_band)
+band_select_variance_vgg = hCNNBM.CNN_Variance_Band_Selection(HIM, model_vgg, num_band)
 band_select_variance_vgg = band_select_variance_vgg + 30
 
 #==============================================================================
@@ -517,16 +435,16 @@ pad = ['same', 'same']
 activation = ['relu', 'relu']
 maxpool = [2, 2]
 
-model_self = CNN_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool, model_type='self')
+model_self = hCNNBM.cnn_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool, model_type='self')
 
 #==============================================================================
 
 #===================== Get Self-Type Feature Map Get Band =====================
 
-band_select_entropy_self = CNN_Entropy_Band_Selection(HIM, model_self, num_band)
+band_select_entropy_self = hCNNBM.CNN_Entropy_Band_Selection(HIM, model_self, num_band)
 band_select_entropy_self = band_select_entropy_self + 30
 
-band_select_variance_self = CNN_Variance_Band_Selection(HIM, model_self, num_band)
+band_select_variance_self = hCNNBM.CNN_Variance_Band_Selection(HIM, model_self, num_band)
 band_select_variance_self = band_select_variance_self + 30
 
 #==============================================================================
