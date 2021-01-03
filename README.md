@@ -93,11 +93,11 @@ hsipl-algo
 			* 相關係數-波段選擇(BS-Corrcoef)
 		* 基於熵-波段選擇
 			* 熵-波段選擇(BS-Entropy)
-			* 卷積特徵熵-波段選擇(CNN_Entropy_Band_Selection)
+			* 卷積特徵-熵-波段選擇(CNN-Entropy-Band-Selection)
 		* 基於標準差-波段選擇
 			* 標準差-波段選擇(BS-STD)
 		* 基於方差-波段選擇
-			* 卷積特徵方差-波段選擇(CNN_Variance_Band_Selection)
+			* 卷積特徵-方差-波段選擇(CNN-Variance-Band-Selection)
 		* 基於約束目標-波段選擇
 			* 最小方差-波段優先級
 				* MinV-BP
