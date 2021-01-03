@@ -178,6 +178,7 @@ hsipl-algo
 	* 異常檢測演算法
 		* 自相關矩陣
 			* 自相關濾波器-Reed-Xiaoli檢測器(R-RXD)
+			* 滑動視窗-最eed-Xiaoli檢測器((SW-RXD)
 			* 低概率目標檢測器(LPTD)
 		* 共變異數矩陣
 			* 共變異數-Reed-Xiaoli檢測器(K-RXD)

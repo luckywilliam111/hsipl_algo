@@ -88,9 +88,9 @@ Description: # Algorithm Package
         		* NWHFC
         	* 波段選擇
         		* 基於CEM-波段選擇
-        			* CEM-BCC
-        			* CEM-BCM
-        			* CEM-BDM
+        			* 最小能量限制法之波段關聯限制(CEM-BCC)
+        			* 最小能量限制法之波段關聯(CEM-BCM)
+        			* 最小能量限制法之波段依賴最小化(CEM-BDM)
         		* 基於相關係數-波段選擇
         			* 相關係數-波段選擇(BS-Corrcoef)
         		* 基於熵-波段選擇
@@ -186,6 +186,7 @@ Description: # Algorithm Package
         	* 異常檢測演算法
         		* 自相關矩陣
         			* 自相關濾波器-Reed-Xiaoli檢測器(R-RXD)
+        			* 滑動視窗-最eed-Xiaoli檢測器((SW-RXD)
         			* 低概率目標檢測器(LPTD)
         		* 共變異數矩陣
         			* 共變異數-Reed-Xiaoli檢測器(K-RXD)

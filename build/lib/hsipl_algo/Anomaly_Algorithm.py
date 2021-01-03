@@ -102,6 +102,47 @@ def R_RXD(original):
     
     return R_RXD_result
 
+def SW_RXD(HIM, K):
+    x, y, z = HIM.shape
+    
+    half = np.fix(K / 2);
+    SW_RXD_result = np.zeros([x, y])
+    
+    for i in range(x):
+        for j in range(y):
+            x1 = i - half
+            x2 = i + half
+            y1 = j - half
+            y2 = j + half
+            
+            if x1 <= 0:
+                x1 = 0;
+            elif x2 >= x:
+                x2 = x
+                
+            if y1 <= 0:
+                y1 = 0;
+            elif y2 >= y:
+                y2 = y
+            
+            x1 = np.int(x1)
+            x2 = np.int(x2)
+            y1 = np.int(y1)
+            y2 = np.int(y2)
+            
+            Local_HIM = HIM[x1:x2, y1:y2, :]
+            
+            xx, yy, zz = Local_HIM.shape
+            X = np.reshape(np.transpose(Local_HIM), (zz, xx*yy))
+            S = np.dot(X, np.transpose(X))
+            r = np.reshape(HIM[i, j, :], [z,1])
+            
+            IS = np.linalg.inv(S)
+         
+            SW_RXD_result[i,j] = np.dot(np.dot(np.transpose(r), IS), r)
+    
+    return SW_RXD_result
+
 def UTD(original):
     x, y, z = original.shape
     
