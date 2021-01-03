@@ -570,7 +570,9 @@ VGG-Type CNN Model
 
 Self-Type CNN Model
 
-<img src="image/Self_Type_Model.png" alt="drawing" width="580" height="450" title="VGG-Type-Model"><img src="image/Leather_CNN_Self_Entropy_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Self-Entropy-Band_Selection"><img src="image/Leather_CNN_Self_Variance_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Self-Variance-Band-Selection">
+<img src="image/Self_Type_Model.png" alt="drawing" width="580" height="450" title="VGG-Type-Model">
+
+<img src="image/Leather_CNN_Self_Entropy_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Self-Entropy-Band_Selection"><img src="image/Leather_CNN_Self_Variance_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Self-Variance-Band-Selection">
 
 # Target / Anomaly Detection Example Code
 
