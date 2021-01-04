@@ -5,6 +5,7 @@ hsipl_algo/CEM_BS_Method.py
 hsipl_algo/CNN_BS_Method.py
 hsipl_algo/CT_BS_Method.py
 hsipl_algo/Calc_Band.py
+hsipl_algo/Component_BS_Method.py
 hsipl_algo/Find_EndMember.py
 hsipl_algo/Hierarchical_Algorithm.py
 hsipl_algo/Other_BS_Method.py
