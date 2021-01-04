@@ -15,6 +15,8 @@ hsipl-algo
 |       |---- Anomaly_Algorithm.py
 |       |---- Calc_Band.py
 |       |---- CEM_BS_Method.py
+|       |---- CNN_BS_Method.py
+|       |---- Component_BS_Method.py
 |       |---- CT_BS_Method.py
 |       |---- Find_EndMember.py
 |       |---- get_Threshold.py
@@ -32,6 +34,8 @@ hsipl-algo
 |  |---- Anomaly_Algorithm.py
 |  |---- Calc_Band.py
 |  |---- CEM_BS_Method.py
+|  |---- CNN_BS_Method.py
+|  |---- Component_BS_Method.py
 |  |---- CT_BS_Method.py
 |  |---- Find_EndMember.py
 |  |---- get_Threshold.py
