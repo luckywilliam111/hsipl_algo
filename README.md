@@ -67,6 +67,8 @@ hsipl-algo
 |  |---- Self_Type_Model.png
 |  |---- Leather_CNN_Self_Entropy_Band_Selection.png
 |  |---- Leather_CNN_Self_Variance_Band_Selection.png
+|  |---- Leather_PCA_Band_Selection.png
+|  |---- Leather_ICA_Band_Selection.png
 |
 |---- .gitattributes
 |---- LICENSE
@@ -502,6 +504,62 @@ Self-Type CNN Model
 <img src="image/Self_Type_Model.png" alt="drawing" width="580" height="450" title="VGG-Type-Model">
 
 <img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_CNN_Self_Entropy_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Self-Entropy-Band_Selection"><img src="image/Leather_CNN_Self_Variance_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Self-Variance-Band-Selection">
+
+# Principal component analysis / Independent Component Analysis Band-Selection Example Code
+
+```python
+import scipy.io as sio
+import matplotlib.pyplot as plt
+import hsipl_algo.Component_BS_Method as hCBM
+
+#================================ Load Data ===================================
+
+path = 'algo_test/data1/'
+
+data = sio.loadmat(path + 'A_6_mnf.mat')
+data = data['im_mnf']
+
+d = sio.loadmat(path + 'A_6_d.mat')
+d = d['d']
+
+HIM = data[:, :, 30:200]
+
+num_band = 5
+
+n_components = 30
+
+#==============================================================================
+
+#========================= PCA / ICA Band-Selection ===========================
+
+band_select_pca = hCBM.PCA_BS(HIM, num_band)
+band_select_pca = band_select_pca + 30
+
+band_select_ica = hCBM.ICA_BS(HIM, n_components, num_band)
+band_select_ica = band_select_ica + 30
+
+#==============================================================================
+
+#================================= Plot Band ==================================
+
+plt.figure()
+plt.plot(d, 'r')
+for i in range(num_band):
+    plt.axvline(x=band_select_pca[i], color='yellow')
+    
+plt.show()
+
+plt.figure()
+plt.plot(d, 'r')
+for i in range(num_band):
+    plt.axvline(x=band_select_ica[i], color='yellow')
+    
+plt.show()
+
+#==============================================================================
+```
+
+<img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_PCA_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-PCA-Band-Selection"><img src="image/Leather_ICA_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-ICA-Band-Selection">
 
 # Target / Anomaly Detection Example Code
 
