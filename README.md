@@ -497,7 +497,7 @@ plt.show()
 
 CNN-Model
 
-<img src="image/CNN_Model.png" alt="drawing" width="580" height="550" title="CNN-Model">
+<img src="image/CNN_Model.PNG" alt="drawing" width="580" height="550" title="CNN-Model">
 
 <img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_CNN_Entropy_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Entropy-Band_Selection"><img src="image/Leather_CNN_Variance_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Variance-Band-Selection">
 
