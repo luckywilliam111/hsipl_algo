@@ -65,12 +65,9 @@ hsipl-algo
 |  |---- Leather_CEM_Band_Selection.png
 |  |---- Leather_Fusion_Band_Selelction_Target.png
 |  |---- Leather_Fusion_SF_CTBS_Band_Selelction.png
-|  |---- VGG_Type_Model.png
-|  |---- Leather_CNN_VGG_Entropy_Band_Selection.png
-|  |---- Leather_CNN_VGG_Variance_Band_Selection.png
-|  |---- Self_Type_Model.png
-|  |---- Leather_CNN_Self_Entropy_Band_Selection.png
-|  |---- Leather_CNN_Self_Variance_Band_Selection.png
+|  |---- CNN_Model.png
+|  |---- Leather_CNN_Entropy_Band_Selection.png
+|  |---- Leather_CNN_Variance_Band_Selection.png
 |  |---- Leather_PCA_Band_Selection.png
 |  |---- Leather_ICA_Band_Selection.png
 |
