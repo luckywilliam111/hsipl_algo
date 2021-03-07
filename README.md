@@ -495,7 +495,7 @@ plt.show()
 #==============================================================================
 ```
 
-CNN Model
+CNN-Model
 
 <img src="image/CNN_Model.png" alt="drawing" width="580" height="550" title="CNN-Model">
 
