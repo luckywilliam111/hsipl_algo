@@ -469,10 +469,10 @@ model = cnn_Featur_Model(net)
 #==============================================================================
 #========================== Get Feature Map Get Band ==========================
 
-band_select_entropy = CNN_Entropy_Band_Selection(HIM, model, num_band)
+band_select_entropy = hCNNBM.CNN_Entropy_Band_Selection(HIM, model, num_band)
 band_select_entropy = band_select_entropy + 30
 
-band_select_variance = CNN_Variance_Band_Selection(HIM, model, num_band)
+band_select_variance = hCNNBM.CNN_Variance_Band_Selection(HIM, model, num_band)
 band_select_variance = band_select_variance + 30
 
 #==============================================================================
@@ -497,7 +497,7 @@ plt.show()
 
 CNN Model
 
-<img src="image/VGG_Type_Model.png" alt="drawing" width="580" height="550" title="VGG-Type-Model">
+<img src="image/CNN_Model.png" alt="drawing" width="580" height="550" title="CNN-Model">
 
 <img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_CNN_Entropy_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Entropy-Band_Selection"><img src="image/Leather_CNN_Variance_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Variance-Band-Selection">
 
