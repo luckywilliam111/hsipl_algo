@@ -461,7 +461,7 @@ net.append({'name': 'd1',
             'units': 4096,
             'activation': 'softmax'})
 
-model = cnn_Featur_Model(net)
+model = hCNNBM.cnn_Featur_Model(net)
 
 #==============================================================================
 #========================== Get Feature Map Get Band ==========================
