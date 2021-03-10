@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: hsipl-algo
-Version: 1.1.0
+Version: 1.1.1
 Summary: For HyperSpectral Image's Algorithm package
 Home-page: https://github.com/luckywilliam111/hsipl_algo
 Author: WEN
@@ -469,7 +469,7 @@ Description: # Algorithm Package
                     'units': 4096,
                     'activation': 'softmax'})
         
-        model = cnn_Featur_Model(net)
+        model = hCNNBM.cnn_Featur_Model(net)
         
         #==============================================================================
         #========================== Get Feature Map Get Band ==========================

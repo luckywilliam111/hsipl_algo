@@ -232,7 +232,15 @@ def SB_TCIMBS(imagecube, d, no_d, num):
         coefficient_integer = weight * -1
         sorted_indices = np.argsort(coefficient_integer, axis=0)
         
-        omega.append(np.int(sorted_indices[0]))
+        omega_len = len(omega)
+        for k in range(sorted_indices.shape[0]):
+            omega.append(np.int(sorted_indices[k]))
+            new_omega_len = len(list(set(omega)))
+            
+            if omega_len < new_omega_len:
+                break
+            else:
+                omega.pop(-1)
         
     band_select = np.array(omega)
     
@@ -310,7 +318,15 @@ def SF_TCIMBS(imagecube, d, no_d, num):
         coefficient_integer = weight * 1
         sorted_indices = np.argsort(coefficient_integer, axis=0)
         
-        omega.append(np.int(sorted_indices[0]))
+        omega_len = len(omega)
+        for k in range(sorted_indices.shape[0]):
+            omega.append(np.int(sorted_indices[k]))
+            new_omega_len = len(list(set(omega)))
+            
+            if omega_len < new_omega_len:
+                break
+            else:
+                omega.pop(-1)
         
     band_select = np.array(omega)
     
