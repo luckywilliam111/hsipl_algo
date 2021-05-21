@@ -1,6 +1,10 @@
 Metadata-Version: 2.1
 Name: hsipl-algo
+<<<<<<< HEAD
 Version: 1.1.5
+=======
+Version: 1.1.1
+>>>>>>> 5c7661bacd0b174afc97990d96dbf140f96a4bf6
 Summary: For HyperSpectral Image's Algorithm package
 Home-page: https://github.com/luckywilliam111/hsipl_algo
 Author: WEN
@@ -73,12 +77,9 @@ Description: # Algorithm Package
         |  |---- Leather_CEM_Band_Selection.png
         |  |---- Leather_Fusion_Band_Selelction_Target.png
         |  |---- Leather_Fusion_SF_CTBS_Band_Selelction.png
-        |  |---- VGG_Type_Model.png
-        |  |---- Leather_CNN_VGG_Entropy_Band_Selection.png
-        |  |---- Leather_CNN_VGG_Variance_Band_Selection.png
-        |  |---- Self_Type_Model.png
-        |  |---- Leather_CNN_Self_Entropy_Band_Selection.png
-        |  |---- Leather_CNN_Self_Variance_Band_Selection.png
+        |  |---- CNN_Model.png
+        |  |---- Leather_CNN_Entropy_Band_Selection.png
+        |  |---- Leather_CNN_Variance_Band_Selection.png
         |  |---- Leather_PCA_Band_Selection.png
         |  |---- Leather_ICA_Band_Selection.png
         |
@@ -390,12 +391,11 @@ Description: # Algorithm Package
         <img src="image/Leather_CEM_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CEM-Band-Selection"><img src="image/Leather_SF_CTBS_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-SF-CTBS-Band-Selection">
         <img src="image/Leather_Fusion_Band_Selelction_Target.png" alt="drawing" width="220" height="175" title="Leather-Fusion-Band-Selelction-Target"><img src="image/Leather_Fusion_SF_CTBS_Band_Selelction.png" alt="drawing" width="220" height="175" title="Leather-Fusion-SF-CTBS-Band_Selelction">
         
-        # CNN Feature Entropy / Variance Band-Selection Example Code
+        # CNN Feature Entropy / Variance Band-Selection Example Code (2021/3/7 update)
         
         ```python
         import scipy.io as sio
         import matplotlib.pyplot as plt
-        from keras import backend as K
         import hsipl_algo.CNN_BS_Method as hCNNBM
         
         #================================ Load Data ===================================
@@ -417,105 +417,98 @@ Description: # Algorithm Package
         num_band = 5
         
         #==============================================================================
+        #================================= Create Model ===============================
         
-        #======================= Create VGG-Type Convolution Model ====================
+        net = []
         
-        filters=[16, 16, 8, 8]
-        kernel = [3, 3, 3, 3]
-        input_shape = (re_HIM.shape[1], re_HIM.shape[2], re_HIM.shape[3])
-        pad = ['same', 'same', 'same', 'same']
-        activation = ['relu', 'relu', 'relu', 'relu']
-        maxpool = [2, 2]
+        net.append({'name': 'input',
+                    'layer': 'Input',
+                    'h': re_HIM.shape[1],
+                    'w': re_HIM.shape[2],
+                    'channel': re_HIM.shape[3]})
         
-        model_vgg = hCNNBM.cnn_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool, model_type='vgg')
+        net.append({'name': 'c1',
+                    'layer': 'Conv2D',
+                    'filters': 16,
+                    'kernel_size': 3,
+                    'strides': 1,
+                    'padding': 'same',
+                    'activation': 'relu'})
+        
+        net.append({'name': 'bn1',
+                    'layer': 'BatchNormalization'})
+        
+        net.append({'name': 'm1',
+                    'layer': 'MaxPooling2D',
+                    'pool_size': 2,
+                    'strides': None,
+                    'padding': 'same'})
+        
+        net.append({'name': 'drop1',
+                    'layer': 'Dropout',
+                    'rate': 0.1})
+        
+        net.append({'name': 'c2',
+                    'layer': 'Conv2D',
+                    'filters': 8,
+                    'kernel_size': 3,
+                    'strides': 1,
+                    'padding': 'same',
+                    'activation': 'relu'})
+        
+        net.append({'name': 'bn2',
+                    'layer': 'BatchNormalization'})
+        
+        net.append({'name': 'm2',
+                    'layer': 'MaxPooling2D',
+                    'pool_size': 2,
+                    'strides': None,
+                    'padding': 'same'})
+        
+        net.append({'name': 'f1',
+                    'layer': 'Flatten'})
+        
+        net.append({'name': 'd1',
+                    'layer': 'Dense',
+                    'units': 4096,
+                    'activation': 'softmax'})
+        
+        model = hCNNBM.cnn_Featur_Model(net)
         
         #==============================================================================
+        #========================== Get Feature Map Get Band ==========================
         
-        #====================== Get VGG-Type Feature Map Get Band =====================
+        band_select_entropy = hCNNBM.CNN_Entropy_Band_Selection(HIM, model, num_band)
+        band_select_entropy = band_select_entropy + 30
         
-        band_select_entropy_vgg = hCNNBM.CNN_Entropy_Band_Selection(HIM, model_vgg, num_band)
-        band_select_entropy_vgg = band_select_entropy_vgg + 30
-        
-        band_select_variance_vgg = hCNNBM.CNN_Variance_Band_Selection(HIM, model_vgg, num_band)
-        band_select_variance_vgg = band_select_variance_vgg + 30
-        
-        #==============================================================================
-        
-        #============================== Clear Keras Model =============================
-        
-        K.clear_session()
+        band_select_variance = hCNNBM.CNN_Variance_Band_Selection(HIM, model, num_band)
+        band_select_variance = band_select_variance + 30
         
         #==============================================================================
-        
-        print('\n\n')
-        
-        #====================== Create Self-Type Convolution Model ====================
-        
-        filters=[16, 8]
-        kernel = [3, 3]
-        input_shape = (re_HIM.shape[1], re_HIM.shape[2], re_HIM.shape[3])
-        pad = ['same', 'same']
-        activation = ['relu', 'relu']
-        maxpool = [2, 2]
-        
-        model_self = hCNNBM.cnn_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool, model_type='self')
-        
-        #==============================================================================
-        
-        #===================== Get Self-Type Feature Map Get Band =====================
-        
-        band_select_entropy_self = hCNNBM.CNN_Entropy_Band_Selection(HIM, model_self, num_band)
-        band_select_entropy_self = band_select_entropy_self + 30
-        
-        band_select_variance_self = hCNNBM.CNN_Variance_Band_Selection(HIM, model_self, num_band)
-        band_select_variance_self = band_select_variance_self + 30
-        
-        #==============================================================================
-        
         #================================= Plot Band ==================================
         
         plt.figure()
         plt.plot(d, 'r')
         for i in range(num_band):
-            plt.axvline(x=band_select_entropy_vgg[i], color='yellow')
+            plt.axvline(x=band_select_entropy[i], color='yellow')
             
         plt.show()
         
         plt.figure()
         plt.plot(d, 'r')
         for i in range(num_band):
-            plt.axvline(x=band_select_variance_vgg[i], color='yellow')
-            
-        plt.show()
-        
-        plt.figure()
-        plt.plot(d, 'r')
-        for i in range(num_band):
-            plt.axvline(x=band_select_entropy_self[i], color='yellow')
-            
-        plt.show()
-        
-        plt.figure()
-        plt.plot(d, 'r')
-        for i in range(num_band):
-            plt.axvline(x=band_select_variance_self[i], color='yellow')
+            plt.axvline(x=band_select_variance[i], color='yellow')
             
         plt.show()
         
         #==============================================================================
         ```
         
-        VGG-Type CNN Model
+        CNN-Model
         
-        <img src="image/VGG_Type_Model.png" alt="drawing" width="580" height="550" title="VGG-Type-Model">
+        <img src="image/CNN_Model.PNG" alt="drawing" width="580" height="550" title="CNN-Model">
         
-        <img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_CNN_VGG_Entropy_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-VGG-Entropy-Band_Selection"><img src="image/Leather_CNN_VGG_Variance_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-VGG-Variance-Band-Selection">
-        
-        Self-Type CNN Model
-        
-        <img src="image/Self_Type_Model.png" alt="drawing" width="580" height="450" title="VGG-Type-Model">
-        
-        <img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_CNN_Self_Entropy_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Self-Entropy-Band_Selection"><img src="image/Leather_CNN_Self_Variance_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Self-Variance-Band-Selection">
+        <img src="image/Leather_Image.jpg" alt="drawing" width="260" height="175" title="Leather-Image"><img src="image/Leather_CNN_Entropy_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Entropy-Band_Selection"><img src="image/Leather_CNN_Variance_Band_Selection.png" alt="drawing" width="220" height="175" title="Leather-CNN-Variance-Band-Selection">
         
         # Principal component analysis / Independent Component Analysis Band-Selection Example Code
         

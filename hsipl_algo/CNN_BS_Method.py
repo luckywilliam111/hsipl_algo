@@ -8,7 +8,8 @@ Created on Mon Jan  4 00:00:46 2021
 import numpy as np
 from scipy.stats import entropy
 from keras.models import Sequential
-from keras.layers import Activation, Flatten, Conv2D, MaxPooling2D, BatchNormalization
+from keras.models import Model
+from keras.layers import Activation, Flatten, Conv2D, MaxPooling2D, BatchNormalization, Input, Dropout, Dense
 
 def CNN_Entropy_Band_Selection(HIM, model, num):
     x, y, z = HIM.shape
@@ -46,45 +47,48 @@ def CNN_Variance_Band_Selection(HIM, model, num):
     
     return band_select_variance
 
-def cnn_Featur_Model(filters, kernel, input_shape, activation, pad, maxpool, model_type='vgg', active=True, BNormalize=True, MaxPool=True, summary=True):
-    model = Sequential()
+def cnn_Featur_Model(net):
+    for i in range(len(net)):
+        if net[i]['layer'] == 'Input':
+            net[i]['name'] = Input(shape=(net[i]['h'], net[i]['w'], net[i]['channel']))
+        elif net[i]['layer'] == 'Conv2D':
+            filters = net[i]['filters']
+            kernel_size = net[i]['kernel_size']
+            strides = (net[i]['strides'], net[i]['strides'])
+            padding = net[i]['padding']
+            activation = net[i]['activation']
+            name = net[i]['name']
+            
+            net[i]['name'] = Conv2D(filters=filters, kernel_size=kernel_size, strides=strides, padding=padding, name=name, activation=activation)(net[i-1]['name'])
+        elif net[i]['layer'] == 'BatchNormalization':
+            name = net[i]['name']
+            
+            net[i]['name'] = BatchNormalization(name=name)(net[i-1]['name'])
+        elif net[i]['layer'] == 'MaxPooling2D':
+            pool_size = net[i]['pool_size']
+            strides = net[i]['strides']
+            padding = net[i]['padding']
+            name = net[i]['name']
+            
+            net[i]['name'] = MaxPooling2D(pool_size=pool_size, strides=strides, padding=padding, name=name)(net[i-1]['name'])
+        elif net[i]['layer'] == 'Dropout':
+            rate = net[i]['rate']
+            name = net[i]['name']
+            
+            net[i]['name'] = Dropout(rate=rate, name=name)(net[i-1]['name'])
+        elif net[i]['layer'] == 'Flatten':
+            name = net[i]['name']
+            
+            net[i]['name'] = Flatten(name=name)(net[i-1]['name'])
+        elif net[i]['layer'] == 'Dense':
+            units = net[i]['units']
+            activation = net[i]['activation']
+            name = net[i]['name']
+            
+            net[i]['name'] = Dense(units=units, activation=activation, name=name)(net[i-1]['name'])
+            
+    model = Model(inputs=net[0]['name'], outputs=net[-1]['name'])
     
-    if model_type == 'vgg':
-        for i in range(len(filters)):
-            if i == 0:
-                model.add(Conv2D(filters[i], (kernel[i], kernel[i]), padding=pad[i], input_shape=input_shape))
-            elif i > 0:
-                model.add(Conv2D(filters[i], (kernel[i], kernel[i]), padding=pad[i]))
-                
-            if active == True:
-                model.add(Activation(activation[i]))
-                
-            if BNormalize == True:
-                model.add(BatchNormalization())
-                
-            if MaxPool == True and i > 0 and (i%2 == 1):
-                model.add(MaxPooling2D(pool_size=(maxpool[np.int(i/2)], maxpool[np.int(i/2)])))
-                
-    elif model_type == 'self':
-        if len(filters) and len(kernel) and len(activation):
-            for i in range(len(filters)):
-                if i == 0:
-                    model.add(Conv2D(filters[i], (kernel[i], kernel[i]), padding=pad[i], input_shape=input_shape))
-                elif i > 0:
-                    model.add(Conv2D(filters[i], (kernel[i], kernel[i]), padding=pad[i]))
-                
-                if active == True:
-                    model.add(Activation(activation[i]))
-                    
-                if BNormalize == True:
-                    model.add(BatchNormalization())
-                    
-                if MaxPool == True:
-                    model.add(MaxPooling2D(pool_size=(maxpool[i], maxpool[i])))
-                    
-    model.add(Flatten())
+    model.summary()
     
-    if summary == True:
-        model.summary()
-        
     return model
