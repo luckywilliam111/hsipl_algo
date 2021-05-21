@@ -1,3 +1,4 @@
+LICENSE
 README.md
 setup.py
 hsipl_algo/Anomaly_Algorithm.py
@@ -8,7 +9,10 @@ hsipl_algo/Calc_Band.py
 hsipl_algo/Component_BS_Method.py
 hsipl_algo/Find_EndMember.py
 hsipl_algo/Hierarchical_Algorithm.py
+hsipl_algo/ICA.py
+hsipl_algo/MNF.py
 hsipl_algo/Other_BS_Method.py
+hsipl_algo/PCA.py
 hsipl_algo/RPCA_Decomposition.py
 hsipl_algo/Target_Algorithm.py
 hsipl_algo/Weighted_Target_Algorithm.py
