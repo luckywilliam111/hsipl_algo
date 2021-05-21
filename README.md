@@ -23,12 +23,15 @@ hsipl-algo
 |       |---- Hierarchical_Algorithm.py
 |       |---- Other_BS_Method.py
 |       |---- RPCA_Decomposition.py
+|       |---- PCA.py
+|       |---- ICA.py
+|       |---- MNF.py
 |       |---- Target_Algorithm.py
 |       |---- Weighted_Target_Algorithm.py
 |
 |---- dist
-|  |---- hsipl_algo-1.0.22.tar
-|  |---- hsipl_algo-1.0.22-py3-none-any.whl
+|  |---- hsipl_algo-1.1.5.tar
+|  |---- hsipl_algo-1.1.5-py3-none-any.whl
 |
 |---- hsipl_algo
 |  |---- Anomaly_Algorithm.py
@@ -42,6 +45,9 @@ hsipl-algo
 |  |---- Hierarchical_Algorithm.py
 |  |---- Other_BS_Method.py
 |  |---- RPCA_Decomposition.py
+|  |---- PCA.py
+|  |---- ICA.py
+|  |---- MNF.py
 |  |---- Target_Algorithm.py
 |  |---- Weighted_Target_Algorithm.py
 |
@@ -137,6 +143,11 @@ hsipl-algo
 				* SSGoDec-Kernel
 				* SVT-Kernel
 				* TGA-Kernel
+	*影像降維
+		*Principal Component Analysis (PCA) - 主成分分析法
+		*Independent Component Analysis (ICA) - 獨立成分分析法
+		*Minimum Noise Fraction (MNF) - 最小噪聲轉換
+		
 				
 * 背景抑制演算法
 	* 目標檢測演算法
