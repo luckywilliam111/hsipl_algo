@@ -30,8 +30,8 @@ hsipl-algo
 |       |---- Weighted_Target_Algorithm.py
 |
 |---- dist
-|  |---- hsipl_algo-1.1.5.tar
-|  |---- hsipl_algo-1.1.5-py3-none-any.whl
+|  |---- hsipl_algo-1.2.0.tar
+|  |---- hsipl_algo-1.2.0-py3-none-any.whl
 |
 |---- hsipl_algo
 |  |---- Anomaly_Algorithm.py
