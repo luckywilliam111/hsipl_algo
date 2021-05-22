@@ -246,6 +246,82 @@ plt.show()
 
 <img src="image/apple.jpg" alt="drawing" width="260" height="175" title="Apple-Image"><img src="image/GA_Low_Rank_Matrix.png" alt="drawing" width="220" height="175" title="GA-Low-Rank Matrix"><img src="image/GA_Sparse_Matrix.png" alt="drawing" width="220" height="175" title="GA-Sparse-Matrix">
 
+# Principal Component Analysis Reduce Dimension (2021/5/22 Update)
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from hsipl_algo.PCA import PCA 
+
+im = plt.imread('pic1.tif')
+im = np.double(im) / 255.0
+
+x, y, z = im.shape
+
+im = im.reshape(x * y, z)
+
+pca = PCA(n_components=2)
+
+pca.fit(im)
+
+tran = pca.transform(im)
+
+explained_variance_ratio = pca.explained_variance_ratio_
+
+components = pca.components_
+
+plt.imshow(tran[:, 0].reshape(1000, 1300))
+```
+
+# Independent Component Analysis Reduce Dimension (2021/5/22 Update)
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from hsipl_algo.ICA import ICA 
+
+im = plt.imread('pic1.tif')
+im = np.double(im) / 255.0
+
+x, y, z = im.shape
+
+im = im.reshape(x * y, z)
+
+ica = ICA(n_components=2)
+
+ica.fit(im)
+
+tran = ica.transform(im)
+
+components = ica.components_
+
+mixing = ica.mixing_
+
+plt.imshow(tran[:, 0].reshape(1000, 1300))
+```
+
+# Minimum Noise Fraction Reduce Dimension And Denoise (2021/5/22 Update)
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from hsipl_algo.MNF import calc_stats, noise_from_diffs, mnf
+
+im = plt.imread('pic1.tif')
+im = np.double(im) / 255.0
+
+x, y, z = im.shape
+
+signal = calc_stats(im)
+noise = noise_from_diffs(im)
+mnfr = mnf(signal, noise)
+
+denoised = mnfr.denoise(im, snr=10)
+reduced = mnfr.reduce(im, snr=10)
+reduced = mnfr.reduce(im, num=50)
+
+```
+
 # Find End-Member Example Code
 
 ```python
