@@ -144,11 +144,10 @@ hsipl-algo
 				* SVT-Kernel
 				* TGA-Kernel
 	
-	/////
-	*影像降維
-		*Principal Component Analysis (PCA) - 主成分分析法
-		*Independent Component Analysis (ICA) - 獨立成分分析法
-		*Minimum Noise Fraction (MNF) - 最小噪聲轉換
+	* 影像降維
+		* Principal Component Analysis (PCA) - 主成分分析法
+		* Independent Component Analysis (ICA) - 獨立成分分析法
+		* Minimum Noise Fraction (MNF) - 最小噪聲轉換
 		
 				
 * 背景抑制演算法
